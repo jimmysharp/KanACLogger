@@ -1,0 +1,12 @@
+*.iml
+.gradle
+gradle.properties
+/local.properties
+/.idea
+**/build
+/captures
+.DS_Store
+.Spotlight-V100
+.Trashes
+Thumbs.db
+
