@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">艦これACロガー</string>
+    <string name="action_settings">設定</string>
+    <string name="tab_construction">建造</string>
+    <string name="tab_drop">ドロップ</string>
+    <string name="tab_manual">手動入力</string>
+    <string name="tab_list">艦娘リスト</string>
+    <string name="text_fuel">燃料</string>
+    <string name="text_bullet">弾薬</string>
+    <string name="text_steel">鋼材</string>
+    <string name="text_bauxite">ボーキ</string>
+    <string name="text_construction_resources">資源</string>
+    <string name="text_construction_result">建造結果</string>
+    <string name="text_add">追加</string>
+    <string name="text_ship_type">艦種</string>
+    <string name="text_ship_name">艦名</string>
+    <string name="text_ship_remodel">改</string>
+    <string name="text_card_type">レア度</string>
+</resources>

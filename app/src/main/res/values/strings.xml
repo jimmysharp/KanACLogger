@@ -1,5 +1,20 @@
 <resources>
     <string name="app_name">KanACLogger</string>
     <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="tab_construction">Construction</string>
+    <string name="tab_drop">Drop</string>
+    <string name="tab_manual">Exchange</string>
+    <string name="tab_list">List</string>
+    <string name="text_fuel">Fuel</string>
+    <string name="text_bullet">Bullet</string>
+    <string name="text_steel">Steel</string>
+    <string name="text_bauxite">Bauxite</string>
+    <string name="text_construction_resources">Resources</string>
+    <string name="text_construction_result">Result</string>
+    <string name="text_add">Add</string>
+    <string name="text_ship_type">ShipType</string>
+    <string name="text_ship_name">Name</string>
+    <string name="text_ship_remodel">Remodeled</string>
+    <string name="text_card_type">Rank</string>
+    <string name="data_json_path">fleetdata</string>
 </resources>
