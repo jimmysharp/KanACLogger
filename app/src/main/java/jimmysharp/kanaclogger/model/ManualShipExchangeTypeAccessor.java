@@ -32,7 +32,7 @@ public class ManualShipExchangeTypeAccessor {
     }
     public static Observable<ManualShipExchangeType> getManualShipExchangeType(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new ManualShipExchangeType(cursor.getLong(0),cursor.getString(1)));
     }
 }

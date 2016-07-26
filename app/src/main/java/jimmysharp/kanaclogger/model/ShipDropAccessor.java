@@ -37,7 +37,7 @@ public class ShipDropAccessor {
     }
     public static Observable<ShipDrop> getShipDrop(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new ShipDrop(
                         cursor.getLong(0),
                         ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),

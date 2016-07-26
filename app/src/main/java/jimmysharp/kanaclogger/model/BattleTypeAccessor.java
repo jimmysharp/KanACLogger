@@ -29,7 +29,7 @@ public class BattleTypeAccessor {
     }
     public static Observable<BattleType> getBattleType(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)));
     }
 }

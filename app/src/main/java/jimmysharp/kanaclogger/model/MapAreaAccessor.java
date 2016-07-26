@@ -33,7 +33,7 @@ public class MapAreaAccessor {
     }
     public static Observable<MapArea> getMapArea(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOneOrDefault(cursor -> new MapArea(cursor.getLong(0),cursor.getString(1)), null);
     }
 }

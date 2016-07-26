@@ -16,15 +16,16 @@ import com.squareup.sqlbrite.BriteDatabase;
 import jimmysharp.kanaclogger.model.ShipConstructionAccessor;
 
 public class ShipConstructionsFragment extends Fragment {
-    private ShipConstructionRecyclerAdapter adapter;
+    private ShipConstructionsRecyclerAdapter adapter;
     private BriteDatabase db = null;
+
     public ShipConstructionsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.db = ((MainActivity)getActivity()).getDB();
-        this.adapter = new ShipConstructionRecyclerAdapter(this.getActivity(),
+        this.adapter = new ShipConstructionsRecyclerAdapter(this.getActivity(),
                 ShipConstructionAccessor.getAllShipConstructions(db));
     }
 
@@ -32,9 +33,11 @@ public class ShipConstructionsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ship_constructions, container, false);
+
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_construction);
         ImageButton buttonOpenConstruction = (ImageButton) view.findViewById(R.id.button_open_construction);
 
+        listView.setAdapter(adapter);
         buttonOpenConstruction.setOnClickListener(view1 -> {
             FragmentManager manager = getActivity().getFragmentManager();
             FragmentTransaction transaction = manager.beginTransaction();

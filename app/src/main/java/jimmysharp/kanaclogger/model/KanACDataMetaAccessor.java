@@ -30,6 +30,7 @@ public class KanACDataMetaAccessor {
             return null;
         }
         else{
+            cursor.moveToFirst();
             int version = cursor.getInt(0);
             cursor.close();
             return version;

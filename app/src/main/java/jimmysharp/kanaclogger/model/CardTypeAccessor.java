@@ -29,7 +29,7 @@ public class CardTypeAccessor {
     }
     public static Observable<CardType> getCardType(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOneOrDefault(cursor -> new CardType(cursor.getLong(0),cursor.getString(1)), null);
     }
 }

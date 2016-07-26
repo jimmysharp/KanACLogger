@@ -46,7 +46,7 @@ public class ShipAccessor {
     }
     public static Observable<Ship> getShip(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new Ship(
                         cursor.getLong(0),
                         cursor.getString(1),

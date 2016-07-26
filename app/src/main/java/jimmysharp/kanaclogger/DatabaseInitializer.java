@@ -47,23 +47,32 @@ public class DatabaseInitializer {
     }
 
     public void migrate() throws IOException{
+        Log.v(TAG,"Schema migration start");
         SQLiteDatabase db = new UserDBOpenHelper(context).getWritableDatabase();
+        Log.v(TAG,"Schema migration end");
+
+        Log.v(TAG,"Data migration start");
         Integer dataVersion = KanACDataMetaAccessor.getDataVersion(db);
 
         try {
             if (dataVersion == null || dataVersion < DATA_VERSION) {
-                Log.v(TAG, "Local KanACData is old");
+                Log.v(TAG, "Local DB data version is old");
                 Log.v(TAG, "Start loading asset DB");
                 loadBundledDB(db);
+            } else {
+                Log.v(TAG,"Current DB data version is up-to-date");
+                Log.v(TAG,"Skipping update process");
             }
         } catch (IOException e) {
             throw e;
         } finally {
             if (db != null && db.isOpen()) db.close();
         }
+        Log.v(TAG,"Data migration end");
     }
 
     public BriteDatabase open() throws IOException{
+        Log.v(TAG,"Open DB to use");
         this.migrate();
         sqlBrite = SqlBrite.create();
         userDB = sqlBrite.wrapDatabaseHelper(new UserDBOpenHelper(context), Schedulers.io());
@@ -72,6 +81,7 @@ public class DatabaseInitializer {
     }
 
     public void close(){
+        Log.v(TAG,"Close DB to use");
         userDB.close();
         sqlBrite = null;
     }
@@ -95,21 +105,22 @@ public class DatabaseInitializer {
                 + "` as "
                 + KANACDB_ARIAS
         );
+        Log.v(TAG,"Temp DB attached");
         if (db.getAttachedDbs().size() < 2) {
             Log.e(TAG,"Failed to attach DB: "+tempDB);
             throw new IOException("Failed to attach DB: "+tempDB);
         }
-        for (Pair<String,String> pair : db.getAttachedDbs()){
-            Log.v(TAG,"now attached:"+pair.first+" "+pair.second);
-        }
 
-        //db.beginTransaction();
+        Log.v(TAG,"Copy tables start");
+        db.beginTransaction();
         for (String table : copyTables){
             db.execSQL("INSERT OR REPLACE INTO `"+table+"` SELECT * FROM "+KANACDB_ARIAS+"."+table);
         }
-        //db.endTransaction();
+        db.endTransaction();
+        Log.v(TAG,"Copy tables end");
 
         db.execSQL("DETACH DATABASE "+KANACDB_ARIAS);
+        Log.v(TAG,"Temp DB detached");
     }
 
     private String copyBundledDB() throws IOException {
@@ -167,7 +178,7 @@ public class DatabaseInitializer {
 
         @Override
         public void onCreate(SQLiteDatabase sqLiteDatabase) {
-            Log.v(TAG,"onCreate");
+            Log.v(TAG,"Create tables start");
             ShipTypeAccessor.create(sqLiteDatabase);
             ShipAccessor.create(sqLiteDatabase);
             CardTypeAccessor.create(sqLiteDatabase);
@@ -182,6 +193,7 @@ public class DatabaseInitializer {
             ShipConstructionAccessor.create(sqLiteDatabase);
             ManualShipExchangeAccessor.create(sqLiteDatabase);
             KanACDataMetaAccessor.create(sqLiteDatabase);
+            Log.v(TAG,"Create tables end");
         }
 
         @Override

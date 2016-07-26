@@ -5,22 +5,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import org.threeten.bp.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Locale;
 import jimmysharp.kanaclogger.model.ShipConstruction;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipConstruction>> itemsObservable;
     private Subscription itemsSubscription;
     private List<ShipConstruction> items;
     private final LayoutInflater inflater;
 
-    public ShipConstructionRecyclerAdapter(Context context, Observable<List<ShipConstruction>> items){
+    public ShipConstructionsRecyclerAdapter(Context context, Observable<List<ShipConstruction>> items){
         this.inflater = LayoutInflater.from(context);
         this.items = new ArrayList<>();
         this.itemsObservable = items;
@@ -36,7 +39,17 @@ public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > position && items.get(position) != null){
-            //TODO: Bind item to viewholder
+            ShipConstruction item = items.get(position);
+            item.getShipTransaction().observeOn(AndroidSchedulers.mainThread()).subscribe(shipTransaction -> {
+                shipTransaction.getShip().observeOn(AndroidSchedulers.mainThread()).subscribe(ship -> {
+                    ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
+                });
+                ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
+                        shipTransaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            });
+            ((TextView)(holder.itemView.findViewById(R.id.resources))).setText(
+                    String.format(Locale.US, "%d/%d/%d/%d",item.getFuel(),item.getBullet(),item.getSteel(),item.getSteel())
+            );
         }
     }
 
@@ -72,8 +85,15 @@ public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<Recycl
     }
 
     public class ShipConstructionRecyclerViewHolder extends RecyclerView.ViewHolder{
+        final TextView shipName;
+        final TextView date;
+        final TextView resources;
+
         public ShipConstructionRecyclerViewHolder(View itemView) {
             super(itemView);
+            shipName = (TextView) itemView.findViewById(R.id.ship_name);
+            date = (TextView) itemView.findViewById(R.id.date);
+            resources = (TextView) itemView.findViewById(R.id.resources);
         }
     }
 }

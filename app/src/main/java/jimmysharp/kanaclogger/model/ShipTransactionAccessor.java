@@ -1,10 +1,10 @@
 package jimmysharp.kanaclogger.model;
 
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
-
-import java.util.Date;
+import org.threeten.bp.Instant;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
 import java.util.List;
 
 import rx.Observable;
@@ -34,7 +34,7 @@ public class ShipTransactionAccessor {
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new ShipTransaction(
                         cursor.getLong(0),
-                        new Date(cursor.getLong(1)),
+                        ZonedDateTime.ofInstant(Instant.ofEpochMilli(cursor.getLong(3)), ZoneId.systemDefault()),
                         ShipAccessor.getShip(db,cursor.getLong(2)),
                         CardTypeAccessor.getCardType(db,cursor.getLong(3)),
                         cursor.getInt(4)
@@ -42,10 +42,10 @@ public class ShipTransactionAccessor {
     }
     public static Observable<ShipTransaction> getShipTransaction(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new ShipTransaction(
                         cursor.getLong(0),
-                        new Date(cursor.getLong(1)),
+                        ZonedDateTime.ofInstant(Instant.ofEpochMilli(cursor.getLong(3)), ZoneId.systemDefault()),
                         ShipAccessor.getShip(db,cursor.getLong(2)),
                         CardTypeAccessor.getCardType(db,cursor.getLong(3)),
                         cursor.getInt(4)

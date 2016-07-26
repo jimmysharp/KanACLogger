@@ -35,7 +35,7 @@ public class ManualShipExchangeAccessor {
     }
     public Observable<ManualShipExchange> getManualShipExchange(BriteDatabase db, int id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor ->
                         new ManualShipExchange(
                                 cursor.getLong(0),

@@ -42,7 +42,7 @@ public class SubMapAccessor {
     }
     public static Observable<SubMap> getSubMap(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
-                + "WHERE _id = "+id)
+                + " WHERE _id = "+id)
                 .mapToOne(cursor -> new SubMap(
                         cursor.getLong(0),
                         MapFieldAccessor.getMapField(db,cursor.getLong(1)),
