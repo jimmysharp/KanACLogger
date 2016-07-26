@@ -1,8 +1,10 @@
-package jimmysharp.kanaclogger.model;
+package jimmysharp.kanaclogger.queryModel;
 
-public class ShipConstruction {
+import jimmysharp.kanaclogger.model.ShipTransaction;
+
+public class ShipConstructionQueryItem {
     private Long id;
-    private int shipTransaction;
+    private ShipTransaction shipTransaction;
     private int fuel;
     private int bullet;
     private int steel;
@@ -11,14 +13,14 @@ public class ShipConstruction {
     public Long getId() {
         return id;
     }
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
-    public int getShipTransaction() {
+    public ShipTransaction getShipTransaction() {
         return shipTransaction;
     }
-    public void setShipTransaction(int shiTransaction) {
-        this.shipTransaction = shiTransaction;
+    public void setShipTransaction(ShipTransaction shipTransaction) {
+        this.shipTransaction = shipTransaction;
     }
     public int getFuel() {
         return fuel;
