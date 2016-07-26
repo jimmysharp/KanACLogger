@@ -16,5 +16,4 @@
     <string name="text_ship_name">Name</string>
     <string name="text_ship_remodel">Remodeled</string>
     <string name="text_card_type">Rank</string>
-    <string name="data_json_path">fleetdata</string>
 </resources>
