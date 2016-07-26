@@ -1,8 +1,8 @@
 package jimmysharp.kanaclogger.model;
 
 public class BattleType {
-    private long id;
-    private String name;
+    private final long id;
+    private final String name;
 
     public BattleType(long id, String name){
         this.id = id;
@@ -12,13 +12,7 @@ public class BattleType {
     public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
     public String getName() {
         return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
 }

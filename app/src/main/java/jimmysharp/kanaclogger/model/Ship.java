@@ -1,54 +1,45 @@
 package jimmysharp.kanaclogger.model;
 
+import rx.Observable;
+
 public class Ship {
-    private long id;
-    private String name;
-    private String kana;
-    private ShipType shipType;
-    private int remodelled;
-    private int sortId;
-    private int originId;
+    private final long id;
+    private final String name;
+    private final String kana;
+    private final Observable<ShipType> shipType;
+    private final int remodelled;
+    private final int sortId;
+    private final int originId;
+
+    public Ship(long id, String name, String kana, Observable<ShipType> shipType, int remodelled, int sortId, int originId) {
+        this.id = id;
+        this.name = name;
+        this.kana = kana;
+        this.shipType = shipType;
+        this.remodelled = remodelled;
+        this.sortId = sortId;
+        this.originId = originId;
+    }
 
     public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
     public String getName() {
         return name;
-    }
-    public void setName(String name) {
-        this.name = name;
     }
     public String getKana() {
         return kana;
     }
-    public void setKana(String kana) {
-        this.kana = kana;
-    }
-    public ShipType getShipType() {
+    public Observable<ShipType> getShipType() {
         return shipType;
-    }
-    public void setShipType(ShipType shipType) {
-        this.shipType = shipType;
     }
     public int getRemodelled() {
         return remodelled;
     }
-    public void setRemodelled(int remodelled) {
-        this.remodelled = remodelled;
-    }
     public int getSortId() {
         return sortId;
     }
-    public void setSortId(int sortId) {
-        this.sortId = sortId;
-    }
     public int getOriginId() {
         return originId;
-    }
-    public void setOriginId(int originId) {
-        this.originId = originId;
     }
 }

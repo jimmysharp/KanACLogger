@@ -1,47 +1,40 @@
 package jimmysharp.kanaclogger.model;
 
-public class ShipConstruction {
-    private Long id;
-    private int shipTransaction;
-    private int fuel;
-    private int bullet;
-    private int steel;
-    private int bauxite;
+import rx.Observable;
 
-    public Long getId() {
+public class ShipConstruction {
+    private final long id;
+    private final Observable<ShipTransaction> shipTransaction;
+    private final int fuel;
+    private final int bullet;
+    private final int steel;
+    private final int bauxite;
+
+    public ShipConstruction(long id, Observable<ShipTransaction> shipTransaction, int fuel, int bullet, int steel, int bauxite) {
+        this.id = id;
+        this.shipTransaction = shipTransaction;
+        this.fuel = fuel;
+        this.bullet = bullet;
+        this.steel = steel;
+        this.bauxite = bauxite;
+    }
+
+    public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public int getShipTransaction() {
+    public Observable<ShipTransaction> getShipTransaction() {
         return shipTransaction;
-    }
-    public void setShipTransaction(int shiTransaction) {
-        this.shipTransaction = shiTransaction;
     }
     public int getFuel() {
         return fuel;
     }
-    public void setFuel(int fuel) {
-        this.fuel = fuel;
-    }
     public int getBullet() {
         return bullet;
-    }
-    public void setBullet(int bullet) {
-        this.bullet = bullet;
     }
     public int getSteel() {
         return steel;
     }
-    public void setSteel(int steel) {
-        this.steel = steel;
-    }
     public int getBauxite() {
         return bauxite;
-    }
-    public void setBauxite(int bauxite) {
-        this.bauxite = bauxite;
     }
 }

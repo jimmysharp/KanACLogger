@@ -7,19 +7,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
-import jimmysharp.kanaclogger.queryModel.ShipConstructionQueryItem;
+
+import jimmysharp.kanaclogger.model.ShipConstruction;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.schedulers.Schedulers;
 
 public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private Observable<List<ShipConstructionQueryItem>> itemsObservable;
+    private Observable<List<ShipConstruction>> itemsObservable;
     private Subscription itemsSubscription;
-    private List<ShipConstructionQueryItem> items;
+    private List<ShipConstruction> items;
     private final LayoutInflater inflater;
 
-    public ShipConstructionRecyclerAdapter(Context context, Observable<List<ShipConstructionQueryItem>> items){
+    public ShipConstructionRecyclerAdapter(Context context, Observable<List<ShipConstruction>> items){
         this.inflater = LayoutInflater.from(context);
         this.items = new ArrayList<>();
         this.itemsObservable = items;
@@ -34,7 +35,9 @@ public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<Recycl
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        //TODO: Bind Query Data
+        if (items != null && items.size() > position && items.get(position) != null){
+            //TODO: Bind item to viewholder
+        }
     }
 
     @Override
@@ -45,7 +48,7 @@ public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        itemsSubscription = itemsObservable.subscribeOn(Schedulers.io()).subscribe(new Observer<List<ShipConstructionQueryItem>>() {
+        itemsSubscription = itemsObservable.subscribeOn(Schedulers.io()).subscribe(new Observer<List<ShipConstruction>>() {
             @Override
             public void onCompleted() {
             }
@@ -55,7 +58,7 @@ public class ShipConstructionRecyclerAdapter extends RecyclerView.Adapter<Recycl
             }
 
             @Override
-            public void onNext(List<ShipConstructionQueryItem> shipConstructionQueryItems) {
+            public void onNext(List<ShipConstruction> shipConstructionQueryItems) {
                 items = shipConstructionQueryItems;
                 notifyDataSetChanged();
             }

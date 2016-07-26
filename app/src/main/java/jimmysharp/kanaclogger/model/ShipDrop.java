@@ -1,26 +1,25 @@
 package jimmysharp.kanaclogger.model;
 
+import rx.Observable;
+
 public class ShipDrop {
-    private long id;
-    private ShipTransaction shipTransaction;
-    private SubMap subMap;
+    private final long id;
+    private final Observable<ShipTransaction> shipTransaction;
+    private final Observable<SubMap> subMap;
+
+    public ShipDrop(long id, Observable<ShipTransaction> shipTransaction, Observable<SubMap> subMap) {
+        this.id = id;
+        this.shipTransaction = shipTransaction;
+        this.subMap = subMap;
+    }
 
     public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
-    public ShipTransaction getShipTransaction() {
+    public Observable<ShipTransaction> getShipTransaction() {
         return shipTransaction;
     }
-    public void setShipTransaction(ShipTransaction shipTransaction) {
-        this.shipTransaction = shipTransaction;
-    }
-    public SubMap getSubMap() {
+    public Observable<SubMap> getSubMap() {
         return subMap;
-    }
-    public void setSubMap(SubMap subMap) {
-        this.subMap = subMap;
     }
 }

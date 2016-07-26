@@ -2,41 +2,36 @@ package jimmysharp.kanaclogger.model;
 
 import java.util.Date;
 
+import rx.Observable;
+
 public class ShipTransaction {
-    private long id;
-    private Date date;
-    private Ship ship;
-    private CardType cardType;
-    private long quantity;
+    private final long id;
+    private final Date date;
+    private final Observable<Ship> ship;
+    private final Observable<CardType> cardType;
+    private final long quantity;
+
+    public ShipTransaction(long id, Date date, Observable<Ship> ship, Observable<CardType> cardType, long quantity) {
+        this.id = id;
+        this.date = date;
+        this.ship = ship;
+        this.cardType = cardType;
+        this.quantity = quantity;
+    }
 
     public long getId() {
         return id;
     }
-    public void setId(long id) {
-        this.id = id;
-    }
     public Date getDate() {
         return date;
     }
-    public void setDate(Date date) {
-        this.date = date;
-    }
-    public Ship getShip() {
+    public Observable<Ship> getShip() {
         return ship;
     }
-    public void setShip(Ship ship) {
-        this.ship = ship;
-    }
-    public CardType getCardType() {
+    public Observable<CardType> getCardType() {
         return cardType;
-    }
-    public void setCardType(CardType cardType) {
-        this.cardType = cardType;
     }
     public long getQuantity() {
         return quantity;
-    }
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
     }
 }

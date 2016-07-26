@@ -7,24 +7,25 @@ import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import com.squareup.sqlbrite.BriteDatabase;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
-    DatabaseManager dbmanager;
+    DatabaseInitializer dbmanager = null;
+    BriteDatabase db = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbmanager = new DatabaseManager(this.getApplicationContext());
+        dbmanager = new DatabaseInitializer(this.getApplicationContext());
+
         try {
-            dbmanager.migrate();
+            db = dbmanager.open();
         } catch (IOException e) {
             this.finish();
         }
-        dbmanager.open();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
@@ -34,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container_main, new ContentsFragment());
         transaction.commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -59,5 +59,9 @@ public class MainActivity extends AppCompatActivity {
         dbmanager.close();
         dbmanager.dispose();
         dbmanager = null;
+    }
+
+    public BriteDatabase getDB(){
+        return db;
     }
 }

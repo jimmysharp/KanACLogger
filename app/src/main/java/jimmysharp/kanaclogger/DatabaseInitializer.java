@@ -31,8 +31,8 @@ import jimmysharp.kanaclogger.model.ShipTypeAccessor;
 import jimmysharp.kanaclogger.model.SubMapAccessor;
 import rx.schedulers.Schedulers;
 
-public class DatabaseManager {
-    private static final String TAG = DatabaseManager.class.getSimpleName();
+public class DatabaseInitializer {
+    private static final String TAG = DatabaseInitializer.class.getSimpleName();
     public static final String BUNDLED_DB = "kanacdb.db";
     private static final String KANACDB_ARIAS = "kanac";
     private static final String TEMPDB_PREFIX = "kanactemp";
@@ -42,7 +42,7 @@ public class DatabaseManager {
     private SqlBrite sqlBrite;
     private BriteDatabase userDB;
 
-    public DatabaseManager(Context context){
+    public DatabaseInitializer(Context context){
         this.context = context;
     }
 
@@ -63,9 +63,12 @@ public class DatabaseManager {
         }
     }
 
-    public void open(){
+    public BriteDatabase open() throws IOException{
+        this.migrate();
         sqlBrite = SqlBrite.create();
         userDB = sqlBrite.wrapDatabaseHelper(new UserDBOpenHelper(context), Schedulers.io());
+
+        return userDB;
     }
 
     public void close(){
