@@ -15,7 +15,6 @@ import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipConstruction>> itemsObservable;
@@ -61,7 +60,7 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        itemsSubscription = itemsObservable.subscribeOn(Schedulers.io()).subscribe(new Observer<List<ShipConstruction>>() {
+        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ShipConstruction>>() {
             @Override
             public void onCompleted() {
             }

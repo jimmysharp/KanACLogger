@@ -57,16 +57,16 @@ public class AddShipConstructionDialog extends DialogFragment {
 
         textFuel = (EditText)view.findViewById(R.id.editText_fuel);
         setResourceCheck(textFuel,
-                (TextInputLayout) view.findViewById(R.id.tieText_fuel));
+                (TextInputLayout) view.findViewById(R.id.til_fuel));
         textBullet = (EditText)view.findViewById(R.id.editText_bullet);
         setResourceCheck(textBullet,
-                (TextInputLayout) view.findViewById(R.id.tieText_bullet));
+                (TextInputLayout) view.findViewById(R.id.til_bullet));
         textSteel = (EditText)view.findViewById(R.id.editText_steel);
         setResourceCheck(textSteel,
-                (TextInputLayout) view.findViewById(R.id.tieText_steel));
+                (TextInputLayout) view.findViewById(R.id.til_steel));
         textBauxite = (EditText)view.findViewById(R.id.editText_bauxite);
         setResourceCheck(textBauxite,
-                (TextInputLayout) view.findViewById(R.id.tieText_bauxite));
+                (TextInputLayout) view.findViewById(R.id.til_bauxite));
 
         ships = new ShipsAdapter(this.getActivity(),android.R.layout.simple_spinner_item);
         ships.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -133,7 +133,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     }
 
     private boolean checkResource(int quantity){
-        if (quantity >= 30 && quantity <= 300) return true;
+        if (quantity >= 30 && quantity <= 999) return true;
         else return false;
     }
 

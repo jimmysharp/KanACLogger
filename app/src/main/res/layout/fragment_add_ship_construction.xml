@@ -28,7 +28,7 @@
             android:layout_gravity="center">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tieText_fuel"
+                android:id="@+id/til_fuel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_widthPercent="50%">
@@ -47,11 +47,11 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tieText_steel"
+                android:id="@+id/til_steel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_toEndOf="@id/tieText_fuel"
+                android:layout_toEndOf="@id/til_fuel"
                 app:layout_widthPercent="50%">
                 <EditText
                     android:id="@+id/editText_steel"
@@ -68,11 +68,11 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tieText_bullet"
+                android:id="@+id/til_bullet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_widthPercent="50%"
-                android:layout_below="@id/tieText_fuel">
+                android:layout_below="@id/til_fuel">
                 <EditText
                     android:id="@+id/editText_bullet"
                     android:layout_width="wrap_content"
@@ -88,12 +88,12 @@
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/tieText_bauxite"
+                android:id="@+id/til_bauxite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_widthPercent="50%"
-                android:layout_toEndOf="@id/tieText_bullet"
-                android:layout_below="@id/tieText_steel">
+                android:layout_toEndOf="@id/til_bullet"
+                android:layout_below="@id/til_steel">
                 <EditText
                     android:id="@+id/editText_bauxite"
                     android:layout_width="wrap_content"
