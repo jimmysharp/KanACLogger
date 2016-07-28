@@ -2,8 +2,6 @@ package jimmysharp.kanaclogger;
 
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,11 +37,9 @@ public class ShipConstructionsFragment extends Fragment {
 
         listView.setAdapter(adapter);
         buttonOpenConstruction.setOnClickListener(view1 -> {
-            FragmentManager manager = getActivity().getFragmentManager();
-            FragmentTransaction transaction = manager.beginTransaction();
-            transaction.replace(R.id.container_main, new AddShipConstructionFragment());
-            transaction.addToBackStack(null);
-            transaction.commit();
+            final AddShipConstructionDialog dialog = new AddShipConstructionDialog();
+            dialog.setTargetFragment(this,100);
+            dialog.show(getChildFragmentManager(),"addConstructionDialog");
         });
 
         return view;
@@ -54,4 +50,6 @@ public class ShipConstructionsFragment extends Fragment {
         super.onDestroy();
         this.db = null;
     }
+
+
 }

@@ -24,13 +24,12 @@ public class KanACDataMetaAccessor {
     }
 
     public static Integer getDataVersion(SQLiteDatabase db){
-        Cursor cursor = db.rawQuery("SELECT value from KanACDataMeta WHERE key=\"version\"",null);
-        if (cursor.getCount()  < 1) {
+        Cursor cursor = db.rawQuery("SELECT value from KanACDataMeta WHERE key = \'version\'",null);
+        if (cursor.getPosition() < 0) {
             cursor.close();
             return null;
         }
         else{
-            cursor.moveToFirst();
             int version = cursor.getInt(0);
             cursor.close();
             return version;

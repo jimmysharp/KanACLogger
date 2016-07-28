@@ -56,8 +56,8 @@ public class DatabaseInitializer {
 
         try {
             if (dataVersion == null || dataVersion < DATA_VERSION) {
-                Log.v(TAG, "Local DB data version is old");
-                Log.v(TAG, "Start loading asset DB");
+                Log.v(TAG, "Local DB data version is old : local is "+dataVersion+", bundled is "+DATA_VERSION);
+                Log.v(TAG, "Start loading bundled DB");
                 loadBundledDB(db);
             } else {
                 Log.v(TAG,"Current DB data version is up-to-date");
@@ -116,6 +116,7 @@ public class DatabaseInitializer {
         for (String table : copyTables){
             db.execSQL("INSERT OR REPLACE INTO `"+table+"` SELECT * FROM "+KANACDB_ARIAS+"."+table);
         }
+        db.setTransactionSuccessful();
         db.endTransaction();
         Log.v(TAG,"Copy tables end");
 
@@ -133,11 +134,11 @@ public class DatabaseInitializer {
 
         try {
             kanACDataStream = context.getAssets().open(BUNDLED_DB, AssetManager.ACCESS_STREAMING);
-            Log.v(TAG,"Successfully open asset DB");
+            Log.v(TAG,"Successfully open bundled DB: "+BUNDLED_DB);
             tempFile = File.createTempFile(TEMPDB_PREFIX,".db",context.getCacheDir());
-            Log.v(TAG,"Successfully make temp DB");
+            Log.v(TAG,"Successfully make temp DB: "+tempFile.getAbsolutePath());
             tempDBStream = new FileOutputStream(tempFile);
-            Log.v(TAG,"Successfully open temp DB");
+            Log.v(TAG,"Successfully open temp DB: "+tempFile.getAbsolutePath());
             tempDBDir = tempFile.getAbsolutePath();
 
             while ((size = kanACDataStream.read(buffer)) > 0){
@@ -146,7 +147,7 @@ public class DatabaseInitializer {
             tempDBStream.flush();
             tempDBStream.close();
             kanACDataStream.close();
-            Log.v(TAG,"Successfully copy aset DB to temp DB");
+            Log.v(TAG,"Successfully copy bundled DB to temp DB.");
 
             return tempDBDir;
         } catch (IOException e) {

@@ -17,4 +17,7 @@
     <string name="text_ship_name">艦名</string>
     <string name="text_ship_remodel">改</string>
     <string name="text_card_type">レア度</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">キャンセル</string>
+    <string name="text_invalid_resourse">資源量が不正です</string>
 </resources>

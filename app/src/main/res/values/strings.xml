@@ -16,4 +16,7 @@
     <string name="text_ship_name">Name</string>
     <string name="text_ship_remodel">Remodeled</string>
     <string name="text_card_type">Rank</string>
+    <string name="text_ok">OK</string>
+    <string name="text_cancel">cancel</string>
+    <string name="text_invalid_resourse">Invalid quantity</string>
 </resources>

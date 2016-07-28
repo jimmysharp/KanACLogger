@@ -1,11 +1,10 @@
 package jimmysharp.kanaclogger.model;
 
+import android.content.ContentValues;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
-
 import java.util.List;
-
 import rx.Observable;
 
 public class ShipConstructionAccessor {
@@ -52,5 +51,19 @@ public class ShipConstructionAccessor {
                         cursor.getInt(4),
                         cursor.getInt(5)
                 ));
+    }
+
+    public static long insert(BriteDatabase db, long shipTransactionId, long fuel, long bullet, long steel, long bauxite){
+        ContentValues contents = new ContentValues();
+        contents.put("shipTransaction",shipTransactionId);
+        contents.put("fuel",fuel);
+        contents.put("bullet",bullet);
+        contents.put("steel",steel);
+        contents.put("bauxite",bauxite);
+
+        long result = db.insert(TABLE_NAME, contents);
+        if (result == -1) throw new SQLException("Failed to insert ShipConstruction data.");
+
+        return result;
     }
 }
