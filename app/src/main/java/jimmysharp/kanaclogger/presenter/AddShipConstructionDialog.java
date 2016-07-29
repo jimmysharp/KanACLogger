@@ -3,7 +3,6 @@ package jimmysharp.kanaclogger.presenter;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,16 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import com.squareup.sqlbrite.BriteDatabase;
-import org.threeten.bp.ZonedDateTime;
-
 import jimmysharp.kanaclogger.R;
+import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.table.CardType;
-import jimmysharp.kanaclogger.model.table.CardTypeAccessor;
 import jimmysharp.kanaclogger.model.table.Ship;
-import jimmysharp.kanaclogger.model.table.ShipAccessor;
-import jimmysharp.kanaclogger.model.table.ShipConstructionAccessor;
-import jimmysharp.kanaclogger.model.table.ShipTransactionAccessor;
 import rx.Subscription;
 
 public class AddShipConstructionDialog extends DialogFragment {
@@ -36,7 +29,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     private Subscription shipsSubscription = null;
     private CardTypesAdapter cardTypes = null;
     private Subscription cardTypesSubscription = null;
-    private BriteDatabase db = null;
+    private DatabaseManager db = null;
 
     private EditText textFuel;
     private EditText textBullet;
@@ -76,9 +69,9 @@ public class AddShipConstructionDialog extends DialogFragment {
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        shipsSubscription = ShipAccessor.getAllShips(db).subscribe(
+        shipsSubscription = db.getAllShips().subscribe(
                 ships -> {this.ships.clear(); this.ships.addAll(ships);});
-        cardTypesSubscription = CardTypeAccessor.getAllCardTypes(db).subscribe(
+        cardTypesSubscription = db.getAllCardTypes().subscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
         spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
@@ -99,7 +92,6 @@ public class AddShipConstructionDialog extends DialogFragment {
     public void onOKClicked(){
         long fuel,bullet,steel,bauxite;
         long shipId,cardTypeId;
-        long shipTransactionId, shipConstructionId;
 
         try {
             fuel = Long.parseLong(textFuel.getText().toString());
@@ -114,17 +106,12 @@ public class AddShipConstructionDialog extends DialogFragment {
             return;
         }
 
-        BriteDatabase.Transaction transaction = db.newTransaction();
         try {
-            shipTransactionId = ShipTransactionAccessor.insert(db, ZonedDateTime.now(),shipId,cardTypeId,1);
-            shipConstructionId = ShipConstructionAccessor.insert(db,shipTransactionId,fuel,bullet,steel,bauxite);
-            transaction.markSuccessful();
-        } catch (SQLException e) {
-            Log.e(TAG,"Failed to add construction");
+            db.addShipConstruction(shipId,cardTypeId,fuel,bullet,steel,bauxite);
+        } catch (RuntimeException e){
+            Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
             //TODO:トースト表示
             return;
-        } finally {
-            transaction.end();
         }
 
         dismiss();

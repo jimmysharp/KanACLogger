@@ -1,6 +1,5 @@
 package jimmysharp.kanaclogger.presenter;
 
-
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -8,15 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
-import com.squareup.sqlbrite.BriteDatabase;
-
 import jimmysharp.kanaclogger.R;
-import jimmysharp.kanaclogger.model.table.ShipConstructionAccessor;
+import jimmysharp.kanaclogger.model.DatabaseManager;
 
 public class ShipConstructionsFragment extends Fragment {
     private ShipConstructionsRecyclerAdapter adapter;
-    private BriteDatabase db = null;
+    private DatabaseManager db = null;
 
     public ShipConstructionsFragment() {}
 
@@ -25,7 +21,7 @@ public class ShipConstructionsFragment extends Fragment {
         super.onCreate(savedInstanceState);
         this.db = ((MainActivity)getActivity()).getDB();
         this.adapter = new ShipConstructionsRecyclerAdapter(this.getActivity(),
-                ShipConstructionAccessor.getAllShipConstructions(db));
+                db.getAllShipConstructions());
     }
 
     @Override

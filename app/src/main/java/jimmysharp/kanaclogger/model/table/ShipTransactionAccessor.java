@@ -65,4 +65,8 @@ public class ShipTransactionAccessor {
 
         return result;
     }
+
+    public static long insert(BriteDatabase db, long shipId, long cardTypeId, long quantity){
+        return insert(db,ZonedDateTime.now(),shipId,cardTypeId,quantity);
+    }
 }

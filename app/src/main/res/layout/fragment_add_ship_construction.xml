@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_widthPercent="50%">
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/editText_fuel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 android:gravity="center"
                 android:layout_toEndOf="@id/til_fuel"
                 app:layout_widthPercent="50%">
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/editText_steel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
                 android:layout_height="wrap_content"
                 app:layout_widthPercent="50%"
                 android:layout_below="@id/til_fuel">
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/editText_bullet"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
                 app:layout_widthPercent="50%"
                 android:layout_toEndOf="@id/til_bullet"
                 android:layout_below="@id/til_steel">
-                <EditText
+                <android.support.design.widget.TextInputEditText
                     android:id="@+id/editText_bauxite"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

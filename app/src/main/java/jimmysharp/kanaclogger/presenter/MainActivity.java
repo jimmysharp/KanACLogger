@@ -12,20 +12,22 @@ import java.io.IOException;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseInitializer;
+import jimmysharp.kanaclogger.model.DatabaseManager;
 
 public class MainActivity extends AppCompatActivity {
-    DatabaseInitializer dbmanager = null;
-    BriteDatabase db = null;
+    DatabaseInitializer initializer = null;
+    DatabaseManager dbmanager = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbmanager = new DatabaseInitializer(this.getApplicationContext());
+        initializer = new DatabaseInitializer(this.getApplicationContext());
 
         try {
-            db = dbmanager.open();
+            BriteDatabase db = initializer.open();
+            dbmanager = new DatabaseManager(db);
         } catch (IOException e) {
             this.finish();
         }
@@ -59,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dbmanager.close();
-        dbmanager.dispose();
-        dbmanager = null;
+        initializer.close();
+        initializer.dispose();
+        initializer = null;
     }
 
-    public BriteDatabase getDB(){
-        return db;
+    public DatabaseManager getDB(){
+        return dbmanager;
     }
 }
