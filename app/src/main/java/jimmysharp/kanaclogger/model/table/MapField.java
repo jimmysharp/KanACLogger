@@ -32,6 +32,9 @@ public class MapField {
     public int getNumber() {
         return number;
     }
+    public String getIdName() {
+        return idName;
+    }
     public String getName() {
         return name;
     }

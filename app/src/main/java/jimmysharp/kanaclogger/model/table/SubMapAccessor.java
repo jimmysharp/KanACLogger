@@ -51,4 +51,17 @@ public class SubMapAccessor {
                         cursor.getInt(4)
                 ));
     }
+
+    public static Observable<SubMap> getSubMap(BriteDatabase db, long mapFieldId, long battleTypeId){
+        return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
+                + " WHERE mapField = " + mapFieldId
+                + " AND battleType = " + battleTypeId)
+                .mapToOne(cursor -> new SubMap(
+                        cursor.getLong(0),
+                        MapFieldAccessor.getMapField(db,cursor.getLong(1)),
+                        BattleTypeAccessor.getBattleType(db,cursor.getLong(2)),
+                        cursor.getInt(3),
+                        cursor.getInt(4)
+                ));
+    }
 }

@@ -2,8 +2,10 @@ package jimmysharp.kanaclogger.presenter;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -17,64 +19,64 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.CardType;
+import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
+import jimmysharp.kanaclogger.model.table.SubMap;
 import rx.Subscription;
 
-public class AddShipConstructionDialog extends DialogFragment {
-    private String TAG = AddShipConstructionDialog.class.getSimpleName();
+public class AddShipDropDialog extends DialogFragment {
+    private String TAG = AddShipDropDialog.class.getSimpleName();
 
+    private MapFieldsAdapter mapFields = null;
+    private BattleTypesAdapter battleTypes = null;
     private ShipsAdapter ships = null;
-    private Subscription shipsSubscription = null;
     private CardTypesAdapter cardTypes = null;
-    private Subscription cardTypesSubscription = null;
     private DatabaseManager db = null;
 
-    private EditText textFuel;
-    private EditText textBullet;
-    private EditText textSteel;
-    private EditText textBauxite;
-
+    private Spinner spinnerMapFields;
+    private Spinner spinnerBattleTypes;
     private Spinner spinnerShips;
     private Spinner spinnerCardTypes;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.fragment_add_ship_construction,null);
+        View view = inflater.inflate(R.layout.fragment_add_ship_drop,null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-                .setTitle(getString(R.string.tab_construction))
+                .setTitle(getString(R.string.tab_drop))
                 .setView(view)
                 .setPositiveButton(getString(R.string.text_ok),null)
                 .setNegativeButton(getString(R.string.text_cancel),((dialogInterface, i) -> onCancelClicked()));
 
-        textFuel = (EditText)view.findViewById(R.id.editText_fuel);
-        setResourceCheck(textFuel,
-                (TextInputLayout) view.findViewById(R.id.til_fuel));
-        textBullet = (EditText)view.findViewById(R.id.editText_bullet);
-        setResourceCheck(textBullet,
-                (TextInputLayout) view.findViewById(R.id.til_bullet));
-        textSteel = (EditText)view.findViewById(R.id.editText_steel);
-        setResourceCheck(textSteel,
-                (TextInputLayout) view.findViewById(R.id.til_steel));
-        textBauxite = (EditText)view.findViewById(R.id.editText_bauxite);
-        setResourceCheck(textBauxite,
-                (TextInputLayout) view.findViewById(R.id.til_bauxite));
-
+        mapFields = new MapFieldsAdapter(this.getActivity(), R.layout.item_spinner);
+        mapFields.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        battleTypes = new BattleTypesAdapter(this.getActivity(), R.layout.item_spinner);
+        battleTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ships = new ShipsAdapter(this.getActivity(), R.layout.item_spinner);
         ships.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cardTypes = new CardTypesAdapter(this.getActivity(), R.layout.item_spinner);
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        shipsSubscription = db.getAllShips().subscribe(
+        db.getAllMapFields().take(1).subscribe(
+                mapFields -> {this.mapFields.clear(); this.mapFields.addAll(mapFields);});
+        db.getAllBattleTypes().take(1).subscribe(
+                battleTypes -> {this.battleTypes.clear(); this.battleTypes.addAll(battleTypes);});
+        db.getAllShips().take(1).subscribe(
                 ships -> {this.ships.clear(); this.ships.addAll(ships);});
-        cardTypesSubscription = db.getAllCardTypes().subscribe(
+        db.getAllCardTypes().take(1).subscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
+        spinnerMapFields = (Spinner) view.findViewById(R.id.spinner_map_field);
+        spinnerMapFields.setAdapter(mapFields);
+        spinnerBattleTypes = (Spinner) view.findViewById(R.id.spinner_battle_type);
+        spinnerBattleTypes.setAdapter(battleTypes);
         spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
         spinnerShips.setAdapter(ships);
         spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
@@ -86,45 +88,25 @@ public class AddShipConstructionDialog extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (shipsSubscription != null) shipsSubscription.unsubscribe();
-        if (cardTypesSubscription != null) cardTypesSubscription.unsubscribe();
-    }
-
     public void onOKClicked(){
-        int fuel,bullet,steel,bauxite;
-        long shipId,cardTypeId;
+        long mapFieldId = ((MapField)spinnerMapFields.getSelectedItem()).getId();
+        long battleTypeId = ((BattleType)spinnerBattleTypes.getSelectedItem()).getId();
+        long shipId = ((Ship)spinnerShips.getSelectedItem()).getId();
+        long cardTypeId = ((CardType)spinnerCardTypes.getSelectedItem()).getId();
 
-        try {
-            fuel = Integer.parseInt(textFuel.getText().toString());
-            bullet = Integer.parseInt(textBullet.getText().toString());
-            steel = Integer.parseInt(textSteel.getText().toString());
-            bauxite = Integer.parseInt(textBauxite.getText().toString());
-            shipId = ((Ship) spinnerShips.getSelectedItem()).getId();
-            cardTypeId = ((CardType) spinnerCardTypes.getSelectedItem()).getId();
-        } catch (NumberFormatException e) {
-            Log.e(TAG,"Failed to add construction: invalid values");
+        SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).toBlocking().first();
+        if (subMap == null) {
+            Log.e(TAG,"Failed to add drop: : No such submap ("+mapFieldId+","+battleTypeId+")");
             //TODO:トースト表示
             return;
-        }
-
-        if (!checkResource(fuel) ||
-                !checkResource(bullet) ||
-                !checkResource(steel) ||
-                !checkResource(bauxite)){
-            Log.e(TAG,"Failed to add construction: values out of bounds");
-            //TODO;トースト表示
-            return;
-        }
-
-        try {
-            db.addShipConstruction(shipId,cardTypeId,fuel,bullet,steel,bauxite);
-        } catch (RuntimeException e){
-            Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
-            //TODO:トースト表示
-            return;
+        } else{
+            try {
+                db.addShipDrop(shipId,cardTypeId,subMap.getId());
+            } catch (RuntimeException e){
+                Log.e(TAG,"Failed to add drop: Database Error: "+e.getMessage());
+                //TODO:トースト表示
+                return;
+            }
         }
 
         dismiss();
@@ -134,34 +116,44 @@ public class AddShipConstructionDialog extends DialogFragment {
         dismiss();
     }
 
-    private boolean checkResource(int quantity){
-        if (quantity >= 30 && quantity <= 999) return true;
-        else return false;
+    public static class MapFieldsAdapter extends ArrayAdapter<MapField>{
+        public MapFieldsAdapter(Context context, int resource) {
+            super(context, resource);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) super.getView(position, convertView, parent);
+            view.setText(getItem(position).getIdName());
+            return view;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) super.getView(position, convertView, parent);
+            view.setText(getItem(position).getIdName());
+            return view;
+        }
     }
 
-    private void setResourceCheck(final EditText text, final TextInputLayout til){
-        text.addTextChangedListener(
-                new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {}
-                    @Override
-                    public void onTextChanged(CharSequence s, int i, int i1, int i2) {
-                        try {
-                            if (checkResource(Integer.parseInt(s.toString()))) {
-                                til.setErrorEnabled(false);
-                            } else {
-                                til.setError(getString(R.string.text_invalid_resource));
-                                til.setErrorEnabled(true);
-                            }
-                        } catch (NumberFormatException e){
-                            til.setError(getString(R.string.text_invalid_resource));
-                            til.setErrorEnabled(true);
-                        }
-                    }
-                    @Override
-                    public void afterTextChanged(Editable editable) {}
-                }
-        );
+    public static class BattleTypesAdapter extends ArrayAdapter<BattleType>{
+        public BattleTypesAdapter(Context context, int resource) {
+            super(context, resource);
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) super.getView(position, convertView, parent);
+            view.setText(getItem(position).getName());
+            return view;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, ViewGroup parent) {
+            TextView view = (TextView) super.getView(position, convertView, parent);
+            view.setText(getItem(position).getName());
+            return view;
+        }
     }
 
     public static class ShipsAdapter extends ArrayAdapter<Ship> {

@@ -18,5 +18,8 @@
     <string name="text_card_type">Rank</string>
     <string name="text_ok">OK</string>
     <string name="text_cancel">cancel</string>
-    <string name="text_invalid_resourse">Invalid quantity</string>
+    <string name="text_invalid_resource">Invalid quantity</string>
+    <string name="text_drop_map_field">Battle area</string>
+    <string name="text_map_field">Sea area</string>
+    <string name="text_battle_type">Battle type</string>
 </resources>

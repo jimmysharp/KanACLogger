@@ -1,5 +1,7 @@
 package jimmysharp.kanaclogger.model.table;
 
+import android.content.ContentValues;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.squareup.sqlbrite.BriteDatabase;
@@ -43,5 +45,16 @@ public class ShipDropAccessor {
                         ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),
                         SubMapAccessor.getSubMap(db,cursor.getLong(2))
                 ));
+    }
+
+    public static long insert(BriteDatabase db, long shipTransactionId, long subMapId){
+        ContentValues contents = new ContentValues();
+        contents.put("shipTransaction",shipTransactionId);
+        contents.put("subMap",subMapId);
+
+        long result = db.insert(TABLE_NAME, contents);
+        if (result == -1) throw new SQLException("Failed to insert ShipDrop data.");
+
+        return result;
     }
 }

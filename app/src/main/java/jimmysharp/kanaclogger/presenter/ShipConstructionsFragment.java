@@ -47,6 +47,4 @@ public class ShipConstructionsFragment extends Fragment {
         super.onDestroy();
         this.db = null;
     }
-
-
 }
