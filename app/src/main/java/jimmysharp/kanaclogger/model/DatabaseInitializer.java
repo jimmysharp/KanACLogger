@@ -35,7 +35,7 @@ public class DatabaseInitializer {
     public static final String BUNDLED_DB = "kanacdb.db";
     private static final String KANACDB_ARIAS = "kanac";
     private static final String TEMPDB_PREFIX = "kanactemp";
-    private static final int DATA_VERSION = 1;
+    private static final int DATA_VERSION = 2;
 
     private Context context;
     private SqlBrite sqlBrite;
