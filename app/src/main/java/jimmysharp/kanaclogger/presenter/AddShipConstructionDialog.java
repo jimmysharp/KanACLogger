@@ -3,6 +3,7 @@ package jimmysharp.kanaclogger.presenter;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
@@ -47,7 +48,7 @@ public class AddShipConstructionDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.tab_construction))
                 .setView(view)
-                .setPositiveButton(getString(R.string.text_ok),((dialogInterface, i) -> onOKClicked()))
+                .setPositiveButton(getString(R.string.text_ok),null)
                 .setNegativeButton(getString(R.string.text_cancel),((dialogInterface, i) -> onCancelClicked()));
 
         textFuel = (EditText)view.findViewById(R.id.editText_fuel);
@@ -63,9 +64,9 @@ public class AddShipConstructionDialog extends DialogFragment {
         setResourceCheck(textBauxite,
                 (TextInputLayout) view.findViewById(R.id.til_bauxite));
 
-        ships = new ShipsAdapter(this.getActivity(),android.R.layout.simple_spinner_item);
+        ships = new ShipsAdapter(this.getActivity(), R.layout.item_spinner);
         ships.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        cardTypes = new CardTypesAdapter(this.getActivity(),android.R.layout.simple_spinner_item);
+        cardTypes = new CardTypesAdapter(this.getActivity(), R.layout.item_spinner);
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
@@ -79,7 +80,10 @@ public class AddShipConstructionDialog extends DialogFragment {
         spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
         spinnerCardTypes.setAdapter(cardTypes);
 
-        return builder.create();
+        AlertDialog dialog = builder.show();
+        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
+
+        return dialog;
     }
 
     @Override
@@ -90,19 +94,28 @@ public class AddShipConstructionDialog extends DialogFragment {
     }
 
     public void onOKClicked(){
-        long fuel,bullet,steel,bauxite;
+        int fuel,bullet,steel,bauxite;
         long shipId,cardTypeId;
 
         try {
-            fuel = Long.parseLong(textFuel.getText().toString());
-            bullet = Long.parseLong(textBullet.getText().toString());
-            steel = Long.parseLong(textSteel.getText().toString());
-            bauxite = Long.parseLong(textBauxite.getText().toString());
+            fuel = Integer.parseInt(textFuel.getText().toString());
+            bullet = Integer.parseInt(textBullet.getText().toString());
+            steel = Integer.parseInt(textSteel.getText().toString());
+            bauxite = Integer.parseInt(textBauxite.getText().toString());
             shipId = ((Ship) spinnerShips.getSelectedItem()).getId();
             cardTypeId = ((CardType) spinnerCardTypes.getSelectedItem()).getId();
         } catch (NumberFormatException e) {
-            Log.e(TAG,"Failed to add construction: invalid args");
+            Log.e(TAG,"Failed to add construction: invalid values");
             //TODO:トースト表示
+            return;
+        }
+
+        if (!checkResource(fuel) ||
+                !checkResource(bullet) ||
+                !checkResource(steel) ||
+                !checkResource(bauxite)){
+            Log.e(TAG,"Failed to add construction: values out of bounds");
+            //TODO;トースト表示
             return;
         }
 
