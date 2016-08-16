@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
@@ -97,18 +98,19 @@ public class AddShipDropDialog extends DialogFragment {
         SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).toBlocking().first();
         if (subMap == null) {
             Log.e(TAG,"Failed to add drop: : No such submap ("+mapFieldId+","+battleTypeId+")");
-            //TODO:トースト表示
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
             return;
         } else{
             try {
                 db.addShipDrop(shipId,cardTypeId,subMap.getId());
             } catch (RuntimeException e){
                 Log.e(TAG,"Failed to add drop: Database Error: "+e.getMessage());
-                //TODO:トースト表示
+                Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
                 return;
             }
         }
 
+        Toast.makeText(this.getActivity(),getString(R.string.msg_add_drop_success),Toast.LENGTH_SHORT).show();
         dismiss();
     }
 

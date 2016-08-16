@@ -17,6 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.table.CardType;
@@ -106,7 +108,7 @@ public class AddShipConstructionDialog extends DialogFragment {
             cardTypeId = ((CardType) spinnerCardTypes.getSelectedItem()).getId();
         } catch (NumberFormatException e) {
             Log.e(TAG,"Failed to add construction: invalid values");
-            //TODO:トースト表示
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -115,7 +117,7 @@ public class AddShipConstructionDialog extends DialogFragment {
                 !checkResource(steel) ||
                 !checkResource(bauxite)){
             Log.e(TAG,"Failed to add construction: values out of bounds");
-            //TODO;トースト表示
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -123,10 +125,11 @@ public class AddShipConstructionDialog extends DialogFragment {
             db.addShipConstruction(shipId,cardTypeId,fuel,bullet,steel,bauxite);
         } catch (RuntimeException e){
             Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
-            //TODO:トースト表示
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();
             return;
         }
 
+        Toast.makeText(this.getActivity(),getString(R.string.msg_add_construction_success),Toast.LENGTH_SHORT).show();
         dismiss();
     }
 

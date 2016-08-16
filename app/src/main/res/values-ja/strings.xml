@@ -23,4 +23,8 @@
     <string name="text_drop_map_field">出撃海域</string>
     <string name="text_map_field">海域</string>
     <string name="text_battle_type">作戦</string>
+    <string name="msg_add_construction_success">建造データを追加しました</string>
+    <string name="msg_add_construction_failed">建造データの追加に失敗しました</string>
+    <string name="msg_add_drop_success">ドロップデータを追加しました</string>
+    <string name="msg_add_drop_failed">ドロップデータの追加に失敗しました</string>
 </resources>
