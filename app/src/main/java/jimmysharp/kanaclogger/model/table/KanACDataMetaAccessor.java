@@ -2,6 +2,7 @@ package jimmysharp.kanaclogger.model.table;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class KanACDataMetaAccessor {
     private static final String TABLE_NAME = "KanACDataMeta";
@@ -25,11 +26,12 @@ public class KanACDataMetaAccessor {
 
     public static Integer getDataVersion(SQLiteDatabase db){
         Cursor cursor = db.rawQuery("SELECT value from KanACDataMeta WHERE key = \'version\'",null);
-        if (cursor.getPosition() < 0) {
+        if (cursor.getCount() < 0) {
             cursor.close();
             return null;
         }
         else{
+            cursor.moveToFirst();
             int version = cursor.getInt(0);
             cursor.close();
             return version;

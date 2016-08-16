@@ -40,7 +40,7 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > position && items.get(position) != null){
-            ShipConstruction item = items.get(position);
+            ShipConstruction item = items.get(items.size()-position-1);
             item.getShipTransaction().observeOn(AndroidSchedulers.mainThread()).subscribe(shipTransaction -> {
                 shipTransaction.getShip().observeOn(AndroidSchedulers.mainThread()).subscribe(ship -> {
                     ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
@@ -49,7 +49,7 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
                         shipTransaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
             });
             ((TextView)(holder.itemView.findViewById(R.id.resources))).setText(
-                    String.format(Locale.US, "%d/%d/%d/%d",item.getFuel(),item.getBullet(),item.getSteel(),item.getSteel())
+                    String.format(Locale.US, "%d/%d/%d/%d",item.getFuel(),item.getBullet(),item.getSteel(),item.getBauxite())
             );
         }
     }

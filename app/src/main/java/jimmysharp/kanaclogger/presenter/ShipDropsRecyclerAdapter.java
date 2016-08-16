@@ -38,7 +38,7 @@ public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > position && items.get(position) != null){
-            ShipDrop item = items.get(position);
+            ShipDrop item = items.get(items.size()-position-1);
             item.getShipTransaction().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(shipTransaction -> {
                 shipTransaction.getShip().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(ship ->
                     ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName()));

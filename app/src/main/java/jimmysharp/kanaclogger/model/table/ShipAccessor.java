@@ -44,6 +44,41 @@ public class ShipAccessor {
                         cursor.getInt(6)
                 ));
     }
+
+    public static Observable<List<Ship>> getAllShipsSorted(BriteDatabase db){
+        return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME + " ORDER BY `sortId`, `remodelled`")
+                .mapToList(cursor -> new Ship(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(6)
+                ));
+    }
+
+    public static Observable<List<Ship>> getShips(BriteDatabase db, ShipType shipType, Boolean remodelled){
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE 1 = 1";
+        if (shipType != null) query += " AND shipType = "+shipType.getId();
+        if (remodelled != null){
+            if (remodelled) query += " AND remodelled > 0";
+            else query += " AND remodelled = 0";
+        }
+        query += " ORDER BY `sortId`, `remodelled`";
+
+        return db.createQuery(TABLE_NAME, query)
+                .mapToList(cursor -> new Ship(
+                        cursor.getLong(0),
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        cursor.getInt(4),
+                        cursor.getInt(5),
+                        cursor.getInt(6)
+                ));
+    }
+
     public static Observable<Ship> getShip(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)

@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -27,6 +28,7 @@ import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
+import jimmysharp.kanaclogger.model.table.ShipType;
 import jimmysharp.kanaclogger.model.table.SubMap;
 import rx.Subscription;
 
@@ -35,12 +37,14 @@ public class AddShipDropDialog extends DialogFragment {
 
     private MapFieldsAdapter mapFields = null;
     private BattleTypesAdapter battleTypes = null;
+    private ShipTypesAdapter shipTypes = null;
     private ShipsAdapter ships = null;
     private CardTypesAdapter cardTypes = null;
     private DatabaseManager db = null;
 
     private Spinner spinnerMapFields;
     private Spinner spinnerBattleTypes;
+    private Spinner spinnerShipTypes;
     private Spinner spinnerShips;
     private Spinner spinnerCardTypes;
 
@@ -59,27 +63,52 @@ public class AddShipDropDialog extends DialogFragment {
         mapFields.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         battleTypes = new BattleTypesAdapter(this.getActivity(), R.layout.item_spinner);
         battleTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        shipTypes = new ShipTypesAdapter(this.getActivity(), R.layout.item_spinner);
+        shipTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ships = new ShipsAdapter(this.getActivity(), R.layout.item_spinner);
         ships.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cardTypes = new CardTypesAdapter(this.getActivity(), R.layout.item_spinner);
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        db.getAllMapFields().take(1).subscribe(
+        db.getAllMapFields().take(1).toBlocking().subscribe(
                 mapFields -> {this.mapFields.clear(); this.mapFields.addAll(mapFields);});
-        db.getAllBattleTypes().take(1).subscribe(
+        db.getAllBattleTypes().take(1).toBlocking().subscribe(
                 battleTypes -> {this.battleTypes.clear(); this.battleTypes.addAll(battleTypes);});
-        db.getAllShips().take(1).subscribe(
-                ships -> {this.ships.clear(); this.ships.addAll(ships);});
-        db.getAllCardTypes().take(1).subscribe(
+        db.getAllShipTypes().take(1).toBlocking().subscribe(
+                shipTypes -> {this.shipTypes.clear(); this.shipTypes.addAll(shipTypes);});
+        if (shipTypes != null && shipTypes.getCount() > 1) {
+            db.getShips(shipTypes.getItem(0),null).take(1).toBlocking().subscribe(
+                    ships -> {
+                        this.ships.clear();
+                        this.ships.addAll(ships);
+                    });
+        } else {
+            db.getAllShipsSorted().take(1).toBlocking().subscribe(
+                    ships -> {
+                        this.ships.clear();
+                        this.ships.addAll(ships);
+                    });
+        }
+        db.getAllCardTypes().take(1).toBlocking().subscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
         spinnerMapFields = (Spinner) view.findViewById(R.id.spinner_map_field);
         spinnerMapFields.setAdapter(mapFields);
         spinnerBattleTypes = (Spinner) view.findViewById(R.id.spinner_battle_type);
         spinnerBattleTypes.setAdapter(battleTypes);
+        spinnerShipTypes = (Spinner) view.findViewById(R.id.spinner_ship_type);
+        spinnerShipTypes.setAdapter(shipTypes);
         spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
         spinnerShips.setAdapter(ships);
+        spinnerShipTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateShips();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
         spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
         spinnerCardTypes.setAdapter(cardTypes);
 
@@ -88,6 +117,16 @@ public class AddShipDropDialog extends DialogFragment {
 
         return dialog;
     }
+
+    public void updateShips(){
+        ShipType shipType = (ShipType) spinnerShipTypes.getSelectedItem();
+        db.getShips(shipType,null).take(1).toBlocking().subscribe(
+                ships -> {
+                    this.ships.clear();
+                    this.ships.addAll(ships);
+                });
+    }
+
 
     public void onOKClicked(){
         long mapFieldId = ((MapField)spinnerMapFields.getSelectedItem()).getId();
@@ -140,46 +179,6 @@ public class AddShipDropDialog extends DialogFragment {
 
     public static class BattleTypesAdapter extends ArrayAdapter<BattleType>{
         public BattleTypesAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-    }
-
-    public static class ShipsAdapter extends ArrayAdapter<Ship> {
-        public ShipsAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-    }
-
-    public static class CardTypesAdapter extends ArrayAdapter<CardType>{
-        public CardTypesAdapter(Context context, int resource) {
             super(context, resource);
         }
 

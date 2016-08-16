@@ -53,6 +53,7 @@ public class DatabaseInitializer {
         Log.v(TAG,"Data migration start");
         Integer dataVersion = KanACDataMetaAccessor.getDataVersion(db);
 
+        Log.v(TAG, "Data version check: local is "+dataVersion+", bundled is "+DATA_VERSION);
         try {
             if (dataVersion == null || dataVersion < DATA_VERSION) {
                 Log.v(TAG, "Local DB data version is old : local is "+dataVersion+", bundled is "+DATA_VERSION);
@@ -114,6 +115,7 @@ public class DatabaseInitializer {
         db.beginTransaction();
         for (String table : copyTables){
             db.execSQL("INSERT OR REPLACE INTO `"+table+"` SELECT * FROM "+KANACDB_ARIAS+"."+table);
+            Log.v(TAG,"table "+table+" copied");
         }
         db.setTransactionSuccessful();
         db.endTransaction();

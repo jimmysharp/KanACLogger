@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -23,15 +24,15 @@ import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
+import jimmysharp.kanaclogger.model.table.ShipType;
 import rx.Subscription;
 
 public class AddShipConstructionDialog extends DialogFragment {
     private String TAG = AddShipConstructionDialog.class.getSimpleName();
 
+    private ShipTypesAdapter shipTypes = null;
     private ShipsAdapter ships = null;
-    private Subscription shipsSubscription = null;
     private CardTypesAdapter cardTypes = null;
-    private Subscription cardTypesSubscription = null;
     private DatabaseManager db = null;
 
     private EditText textFuel;
@@ -39,6 +40,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     private EditText textSteel;
     private EditText textBauxite;
 
+    private Spinner spinnerShipTypes;
     private Spinner spinnerShips;
     private Spinner spinnerCardTypes;
 
@@ -66,19 +68,44 @@ public class AddShipConstructionDialog extends DialogFragment {
         setResourceCheck(textBauxite,
                 (TextInputLayout) view.findViewById(R.id.til_bauxite));
 
+        shipTypes = new ShipTypesAdapter(this.getActivity(), R.layout.item_spinner);
+        shipTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         ships = new ShipsAdapter(this.getActivity(), R.layout.item_spinner);
         ships.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         cardTypes = new CardTypesAdapter(this.getActivity(), R.layout.item_spinner);
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        shipsSubscription = db.getAllShips().subscribe(
-                ships -> {this.ships.clear(); this.ships.addAll(ships);});
-        cardTypesSubscription = db.getAllCardTypes().subscribe(
+        db.getAllShipTypes().take(1).toBlocking().subscribe(
+                shipTypes -> {this.shipTypes.clear(); this.shipTypes.addAll(shipTypes);});
+        if (shipTypes != null && shipTypes.getCount() > 1) {
+            db.getShips(shipTypes.getItem(0),null).take(1).toBlocking().subscribe(
+                    ships -> {
+                        this.ships.clear();
+                        this.ships.addAll(ships);
+                    });
+        } else {
+            db.getAllShipsSorted().take(1).toBlocking().subscribe(
+                    ships -> {
+                        this.ships.clear();
+                        this.ships.addAll(ships);
+                    });
+        }
+        db.getAllCardTypes().take(1).toBlocking().subscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
+        spinnerShipTypes = (Spinner) view.findViewById(R.id.spinner_ship_type);
+        spinnerShipTypes.setAdapter(shipTypes);
         spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
         spinnerShips.setAdapter(ships);
+        spinnerShipTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                updateShips();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
+        });
         spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
         spinnerCardTypes.setAdapter(cardTypes);
 
@@ -88,11 +115,13 @@ public class AddShipConstructionDialog extends DialogFragment {
         return dialog;
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (shipsSubscription != null) shipsSubscription.unsubscribe();
-        if (cardTypesSubscription != null) cardTypesSubscription.unsubscribe();
+    public void updateShips(){
+        ShipType shipType = (ShipType) spinnerShipTypes.getSelectedItem();
+        db.getShips(shipType,null).take(1).toBlocking().subscribe(
+                ships -> {
+                    this.ships.clear();
+                    this.ships.addAll(ships);
+                });
     }
 
     public void onOKClicked(){
@@ -165,45 +194,5 @@ public class AddShipConstructionDialog extends DialogFragment {
                     public void afterTextChanged(Editable editable) {}
                 }
         );
-    }
-
-    public static class ShipsAdapter extends ArrayAdapter<Ship> {
-        public ShipsAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-    }
-
-    public static class CardTypesAdapter extends ArrayAdapter<CardType>{
-        public CardTypesAdapter(Context context, int resource) {
-            super(context, resource);
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView, ViewGroup parent) {
-            TextView view = (TextView) super.getView(position, convertView, parent);
-            view.setText(getItem(position).getName());
-            return view;
-        }
     }
 }

@@ -19,6 +19,8 @@ import jimmysharp.kanaclogger.model.table.ShipConstructionAccessor;
 import jimmysharp.kanaclogger.model.table.ShipDrop;
 import jimmysharp.kanaclogger.model.table.ShipDropAccessor;
 import jimmysharp.kanaclogger.model.table.ShipTransactionAccessor;
+import jimmysharp.kanaclogger.model.table.ShipType;
+import jimmysharp.kanaclogger.model.table.ShipTypeAccessor;
 import jimmysharp.kanaclogger.model.table.SubMap;
 import jimmysharp.kanaclogger.model.table.SubMapAccessor;
 import rx.Observable;
@@ -75,6 +77,14 @@ public class DatabaseManager {
         return ShipAccessor.getAllShips(db);
     }
 
+    public Observable<List<Ship>> getAllShipsSorted() {
+        return ShipAccessor.getAllShipsSorted(db);
+    }
+
+    public Observable<List<Ship>> getShips(ShipType shipType, Boolean remodelled){
+        return ShipAccessor.getShips(db,shipType,remodelled);
+    }
+
     public Observable<List<CardType>> getAllCardTypes() {
         return CardTypeAccessor.getAllCardTypes(db);
     }
@@ -93,5 +103,9 @@ public class DatabaseManager {
 
     public Observable<List<MapField>> getAllMapFields(){
         return MapFieldAccessor.getAllMapFields(db);
+    }
+
+    public Observable<List<ShipType>> getAllShipTypes(){
+        return ShipTypeAccessor.getAllShipTypes(db);
     }
 }
