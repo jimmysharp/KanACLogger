@@ -1,11 +1,8 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
-
 import java.util.List;
-
 import rx.Observable;
 
 public class SubMapAccessor {
@@ -30,38 +27,47 @@ public class SubMapAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<SubMap>> getAllSubMaps(BriteDatabase db){
+    public static Observable<List<SubMap>> getAllSubMapsObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new SubMap(
                         cursor.getLong(0),
-                        MapFieldAccessor.getMapField(db,cursor.getLong(1)),
-                        BattleTypeAccessor.getBattleType(db,cursor.getLong(2)),
+                        MapFieldAccessor.getMapFieldObservable(db,cursor.getLong(1)),
+                        BattleTypeAccessor.getBattleTypeObservable(db,cursor.getLong(2)),
                         cursor.getInt(3),
                         cursor.getInt(4)
                 ));
     }
-    public static Observable<SubMap> getSubMap(BriteDatabase db, long id){
+    public static List<SubMap> getAllSubMaps(BriteDatabase db){
+        return getAllSubMapsObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<SubMap> getSubMapObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
                 .mapToOne(cursor -> new SubMap(
                         cursor.getLong(0),
-                        MapFieldAccessor.getMapField(db,cursor.getLong(1)),
-                        BattleTypeAccessor.getBattleType(db,cursor.getLong(2)),
+                        MapFieldAccessor.getMapFieldObservable(db,cursor.getLong(1)),
+                        BattleTypeAccessor.getBattleTypeObservable(db,cursor.getLong(2)),
                         cursor.getInt(3),
                         cursor.getInt(4)
                 ));
     }
+    public static SubMap getSubMap(BriteDatabase db, long id){
+        return getSubMapObservable(db, id).toBlocking().firstOrDefault(null);
+    }
 
-    public static Observable<SubMap> getSubMap(BriteDatabase db, long mapFieldId, long battleTypeId){
+    public static Observable<SubMap> getSubMapObservable(BriteDatabase db, long mapFieldId, long battleTypeId){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE mapField = " + mapFieldId
                 + " AND battleType = " + battleTypeId)
-                .mapToOne(cursor -> new SubMap(
+                .mapToOneOrDefault(cursor -> new SubMap(
                         cursor.getLong(0),
-                        MapFieldAccessor.getMapField(db,cursor.getLong(1)),
-                        BattleTypeAccessor.getBattleType(db,cursor.getLong(2)),
+                        MapFieldAccessor.getMapFieldObservable(db,cursor.getLong(1)),
+                        BattleTypeAccessor.getBattleTypeObservable(db,cursor.getLong(2)),
                         cursor.getInt(3),
                         cursor.getInt(4)
-                ));
+                ),null);
+    }
+    public static SubMap getSubMap(BriteDatabase db, long mapFieldId, long battleTypeId){
+        return getSubMapObservable(db, mapFieldId, battleTypeId).toBlocking().firstOrDefault(null);
     }
 }

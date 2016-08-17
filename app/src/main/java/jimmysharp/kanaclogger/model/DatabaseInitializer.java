@@ -5,17 +5,15 @@ import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-
 import jimmysharp.kanaclogger.model.table.BattleTypeAccessor;
+import jimmysharp.kanaclogger.model.table.CardAccessor;
 import jimmysharp.kanaclogger.model.table.CardTypeAccessor;
 import jimmysharp.kanaclogger.model.table.KanACDataMetaAccessor;
 import jimmysharp.kanaclogger.model.table.ManualShipExchangeAccessor;
@@ -96,7 +94,8 @@ public class DatabaseInitializer {
                 KanACDataMetaAccessor.getTableName(),
                 ManualShipExchangeTypeAccessor.getTableName(),
                 ShipTypeAccessor.getTableName(),
-                ShipAccessor.getTableName()
+                ShipAccessor.getTableName(),
+                CardAccessor.getTableName()
         };
         String tempDB = copyBundledDB();
 
@@ -184,6 +183,7 @@ public class DatabaseInitializer {
             ShipTypeAccessor.create(sqLiteDatabase);
             ShipAccessor.create(sqLiteDatabase);
             CardTypeAccessor.create(sqLiteDatabase);
+            CardAccessor.create(sqLiteDatabase);
             MapAreaAccessor.create(sqLiteDatabase);
             MapFieldAccessor.create(sqLiteDatabase);
             BattleTypeAccessor.create(sqLiteDatabase);

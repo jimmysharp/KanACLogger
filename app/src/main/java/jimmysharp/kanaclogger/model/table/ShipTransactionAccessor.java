@@ -8,6 +8,7 @@ import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import java.util.List;
+
 import rx.Observable;
 
 public class ShipTransactionAccessor {
@@ -16,8 +17,7 @@ public class ShipTransactionAccessor {
             "CREATE TABLE \"ShipTransaction\" (\n" +
                     "\t`_id`\tINTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                     "\t`date`\tINTEGER NOT NULL,\n" +
-                    "\t`ship`\tINTEGER NOT NULL,\n" +
-                    "\t`cardType`\tINTEGER NOT NULL,\n" +
+                    "\t`card`\tINTEGER NOT NULL,\n" +
                     "\t`quantity`\tINTEGER NOT NULL\n" +
                     ")";
 
@@ -31,33 +31,36 @@ public class ShipTransactionAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<ShipTransaction>> getShipTransactions(BriteDatabase db){
+    public static Observable<List<ShipTransaction>> getAllShipTransactionsObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new ShipTransaction(
                         cursor.getLong(0),
                         ZonedDateTime.ofInstant(Instant.ofEpochMilli(cursor.getLong(1)), ZoneId.systemDefault()),
-                        ShipAccessor.getShip(db,cursor.getLong(2)),
-                        CardTypeAccessor.getCardType(db,cursor.getLong(3)),
-                        cursor.getInt(4)
+                        CardAccessor.getCardObservable(db,cursor.getLong(2)),
+                        cursor.getInt(3)
                 ));
     }
-    public static Observable<ShipTransaction> getShipTransaction(BriteDatabase db, long id){
+    public static List<ShipTransaction> getAllShipTransaction(BriteDatabase db){
+        return getAllShipTransactionsObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<ShipTransaction> getShipTransactionObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
-                .mapToOne(cursor -> new ShipTransaction(
+                .mapToOneOrDefault(cursor -> new ShipTransaction(
                         cursor.getLong(0),
                         ZonedDateTime.ofInstant(Instant.ofEpochMilli(cursor.getLong(1)), ZoneId.systemDefault()),
-                        ShipAccessor.getShip(db,cursor.getLong(2)),
-                        CardTypeAccessor.getCardType(db,cursor.getLong(3)),
-                        cursor.getInt(4)
-                ));
+                        CardAccessor.getCardObservable(db,cursor.getLong(2)),
+                        cursor.getInt(3)
+                ),null);
+    }
+    public static ShipTransaction getShipTransaction(BriteDatabase db, long id){
+        return getShipTransactionObservable(db, id).toBlocking().firstOrDefault(null);
     }
 
-    public static long insert(BriteDatabase db, ZonedDateTime date, long shipId, long cardTypeId, long quantity){
+    public static long insert(BriteDatabase db, ZonedDateTime date, long cardId, long quantity){
         ContentValues contents = new ContentValues();
         contents.put("date",date.toInstant().toEpochMilli());
-        contents.put("ship",shipId);
-        contents.put("cardType",cardTypeId);
+        contents.put("card",cardId);
         contents.put("quantity",quantity);
 
         long result = db.insert(TABLE_NAME, contents);
@@ -66,7 +69,7 @@ public class ShipTransactionAccessor {
         return result;
     }
 
-    public static long insert(BriteDatabase db, long shipId, long cardTypeId, long quantity){
-        return insert(db,ZonedDateTime.now(),shipId,cardTypeId,quantity);
+    public static long insert(BriteDatabase db, long cardId, long quantity){
+        return insert(db,ZonedDateTime.now(),cardId,quantity);
     }
 }

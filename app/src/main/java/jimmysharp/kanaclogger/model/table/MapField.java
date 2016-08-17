@@ -26,8 +26,11 @@ public class MapField {
     public long getId() {
         return id;
     }
-    public Observable<MapArea> getMapArea() {
+    public Observable<MapArea> getMapAreaObservable() {
         return mapArea;
+    }
+    public MapArea getMapArea(){
+        return mapArea.toBlocking().firstOrDefault(null);
     }
     public int getNumber() {
         return number;

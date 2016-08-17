@@ -5,6 +5,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import com.squareup.sqlbrite.BriteDatabase;
 import java.util.List;
+
 import rx.Observable;
 
 public class ShipConstructionAccessor {
@@ -29,28 +30,34 @@ public class ShipConstructionAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<ShipConstruction>> getAllShipConstructions(BriteDatabase db){
+    public static Observable<List<ShipConstruction>> getAllShipConstructionsObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new ShipConstruction(
                         cursor.getLong(0),
-                        ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),
+                        ShipTransactionAccessor.getShipTransactionObservable(db,cursor.getLong(1)),
                         cursor.getInt(2),
                         cursor.getInt(3),
                         cursor.getInt(4),
                         cursor.getInt(5)
                 ));
     }
-    public static Observable<ShipConstruction> getShipConstruction(BriteDatabase db, long id){
+    public static List<ShipConstruction> getAllShipConstructions(BriteDatabase db){
+        return getAllShipConstructionsObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<ShipConstruction> getShipConstructionObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
-                .mapToOne(cursor -> new ShipConstruction(
+                .mapToOneOrDefault(cursor -> new ShipConstruction(
                         cursor.getLong(0),
-                        ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),
+                        ShipTransactionAccessor.getShipTransactionObservable(db,cursor.getLong(1)),
                         cursor.getInt(2),
                         cursor.getInt(3),
                         cursor.getInt(4),
                         cursor.getInt(5)
-                ));
+                ),null);
+    }
+    public static ShipConstruction getShipConstruction(BriteDatabase db, long id){
+        return getShipConstructionObservable(db, id).toBlocking().firstOrDefault(null);
     }
 
     public static long insert(BriteDatabase db, long shipTransactionId, long fuel, long bullet, long steel, long bauxite){

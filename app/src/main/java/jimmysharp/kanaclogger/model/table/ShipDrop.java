@@ -16,10 +16,16 @@ public class ShipDrop {
     public long getId() {
         return id;
     }
-    public Observable<ShipTransaction> getShipTransaction() {
+    public Observable<ShipTransaction> getShipTransactionObservable() {
         return shipTransaction;
     }
-    public Observable<SubMap> getSubMap() {
+    public ShipTransaction getShipTransaction(){
+        return shipTransaction.toBlocking().firstOrDefault(null);
+    }
+    public Observable<SubMap> getSubMapObservable() {
         return subMap;
+    }
+    public SubMap getSubMap(){
+        return subMap.toBlocking().firstOrDefault(null);
     }
 }

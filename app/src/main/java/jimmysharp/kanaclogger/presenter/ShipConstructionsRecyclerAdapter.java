@@ -2,6 +2,7 @@ package jimmysharp.kanaclogger.presenter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,10 @@ import java.util.List;
 import java.util.Locale;
 
 import jimmysharp.kanaclogger.R;
+import jimmysharp.kanaclogger.model.table.Card;
+import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipConstruction;
+import jimmysharp.kanaclogger.model.table.ShipTransaction;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -41,13 +45,13 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > position && items.get(position) != null){
             ShipConstruction item = items.get(items.size()-position-1);
-            item.getShipTransaction().observeOn(AndroidSchedulers.mainThread()).subscribe(shipTransaction -> {
-                shipTransaction.getShip().observeOn(AndroidSchedulers.mainThread()).subscribe(ship -> {
-                    ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
-                });
-                ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
-                        shipTransaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
-            });
+            ShipTransaction transaction = item.getShipTransaction();
+            Card card = transaction.getCard();
+            Ship ship = card.getShip();
+
+            ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
+                    transaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
             ((TextView)(holder.itemView.findViewById(R.id.resources))).setText(
                     String.format(Locale.US, "%d/%d/%d/%d",item.getFuel(),item.getBullet(),item.getSteel(),item.getBauxite())
             );

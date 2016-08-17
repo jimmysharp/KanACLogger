@@ -20,11 +20,17 @@ public class SubMap {
     public long getId() {
         return id;
     }
-    public Observable<MapField> getMapField() {
+    public Observable<MapField> getMapFieldObservable() {
         return mapField;
     }
-    public Observable<BattleType> getBattleType() {
+    public MapField getMapField(){
+        return mapField.toBlocking().firstOrDefault(null);
+    }
+    public Observable<BattleType> getBattleTypeObservable() {
         return battleType;
+    }
+    public BattleType getBattleType(){
+        return battleType.toBlocking().firstOrDefault(null);
     }
     public int getGp() {
         return gp;

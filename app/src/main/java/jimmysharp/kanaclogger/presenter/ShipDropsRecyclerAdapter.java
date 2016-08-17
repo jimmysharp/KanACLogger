@@ -10,7 +10,14 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import jimmysharp.kanaclogger.R;
+import jimmysharp.kanaclogger.model.table.BattleType;
+import jimmysharp.kanaclogger.model.table.Card;
+import jimmysharp.kanaclogger.model.table.MapArea;
+import jimmysharp.kanaclogger.model.table.MapField;
+import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipDrop;
+import jimmysharp.kanaclogger.model.table.ShipTransaction;
+import jimmysharp.kanaclogger.model.table.SubMap;
 import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
@@ -39,18 +46,18 @@ public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (items != null && items.size() > position && items.get(position) != null){
             ShipDrop item = items.get(items.size()-position-1);
-            item.getShipTransaction().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(shipTransaction -> {
-                shipTransaction.getShip().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(ship ->
-                    ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName()));
-                ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
-                        shipTransaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
-            });
-            item.getSubMap().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(subMap -> {
-                subMap.getMapField().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(mapField ->
-                        ((TextView)(holder.itemView.findViewById(R.id.drop_map_field))).setText(mapField.getIdName()));
-                subMap.getBattleType().observeOn(AndroidSchedulers.mainThread()).take(1).subscribe(battleType ->
-                        ((TextView)(holder.itemView.findViewById(R.id.drop_battle_type))).setText(battleType.getName()));
-            });
+            ShipTransaction transaction = item.getShipTransaction();
+            Card card = transaction.getCard();
+            Ship ship = card.getShip();
+            SubMap subMap = item.getSubMap();
+            MapField mapField = subMap.getMapField();
+            BattleType battleType = subMap.getBattleType();
+
+            ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
+                    transaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
+            ((TextView)(holder.itemView.findViewById(R.id.drop_map_field))).setText(mapField.getIdName());
+            ((TextView)(holder.itemView.findViewById(R.id.drop_battle_type))).setText(battleType.getName());
         }
     }
 

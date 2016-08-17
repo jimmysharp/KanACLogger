@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
     tools:context=".presenter.ShipListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView_ship_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="hello" />
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="10dp"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
 
-</FrameLayout>
+</RelativeLayout>

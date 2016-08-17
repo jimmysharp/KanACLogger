@@ -24,23 +24,29 @@ public class ManualShipExchangeAccessor {
         return TABLE_NAME;
     }
 
-    public Observable<List<ManualShipExchange>> getAllManualShipExchanges(BriteDatabase db){
+    public static Observable<List<ManualShipExchange>> getAllManualShipExchangesObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor ->
                         new ManualShipExchange(
                                 cursor.getLong(0),
-                                ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),
-                                ManualShipExchangeTypeAccessor.getManualShipExchangeType(db,cursor.getLong(2))
+                                ShipTransactionAccessor.getShipTransactionObservable(db,cursor.getLong(1)),
+                                ManualShipExchangeTypeAccessor.getManualShipExchangeTypeObservable(db,cursor.getLong(2))
                         ));
     }
-    public Observable<ManualShipExchange> getManualShipExchange(BriteDatabase db, int id){
+    public static List<ManualShipExchange> getAllManualShipExchanges(BriteDatabase db){
+        return getAllManualShipExchangesObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<ManualShipExchange> getManualShipExchangeObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
-                .mapToOne(cursor ->
+                .mapToOneOrDefault(cursor ->
                         new ManualShipExchange(
                                 cursor.getLong(0),
-                                ShipTransactionAccessor.getShipTransaction(db,cursor.getLong(1)),
-                                ManualShipExchangeTypeAccessor.getManualShipExchangeType(db,cursor.getLong(2))
-                        ));
+                                ShipTransactionAccessor.getShipTransactionObservable(db,cursor.getLong(1)),
+                                ManualShipExchangeTypeAccessor.getManualShipExchangeTypeObservable(db,cursor.getLong(2))
+                        ),null);
+    }
+    public static ManualShipExchange getManualShipExchange(BriteDatabase db, long id){
+        return getManualShipExchangeObservable(db, id).toBlocking().firstOrDefault(null);
     }
 }

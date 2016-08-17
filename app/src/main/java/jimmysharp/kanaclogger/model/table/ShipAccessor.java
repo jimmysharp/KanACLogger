@@ -1,9 +1,7 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
-
 import java.util.List;
 
 import rx.Observable;
@@ -32,33 +30,39 @@ public class ShipAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<Ship>> getAllShips(BriteDatabase db){
+    public static Observable<List<Ship>> getAllShipsObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new Ship(
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        ShipTypeAccessor.getShipTypeObservable(db,cursor.getLong(3)),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(6)
                 ));
     }
+    public static List<Ship> getAllShips(BriteDatabase db){
+        return getAllShipsObservable(db).toBlocking().firstOrDefault(null);
+    }
 
-    public static Observable<List<Ship>> getAllShipsSorted(BriteDatabase db){
+    public static Observable<List<Ship>> getAllShipsSortedObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME + " ORDER BY `sortId`, `remodelled`")
                 .mapToList(cursor -> new Ship(
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        ShipTypeAccessor.getShipTypeObservable(db,cursor.getLong(3)),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(6)
                 ));
     }
+    public static List<Ship> getAllShipsSorted(BriteDatabase db){
+        return getAllShipsSortedObservable(db).toBlocking().firstOrDefault(null);
+    }
 
-    public static Observable<List<Ship>> getShips(BriteDatabase db, ShipType shipType, Boolean remodelled){
+    public static Observable<List<Ship>> getShipsObservable(BriteDatabase db, ShipType shipType, Boolean remodelled){
         String query = "SELECT * FROM " + TABLE_NAME + " WHERE 1 = 1";
         if (shipType != null) query += " AND shipType = "+shipType.getId();
         if (remodelled != null){
@@ -72,24 +76,30 @@ public class ShipAccessor {
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        ShipTypeAccessor.getShipTypeObservable(db,cursor.getLong(3)),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(6)
                 ));
     }
+    public static List<Ship> getShips(BriteDatabase db, ShipType shipType, Boolean remodelled){
+        return getShipsObservable(db, shipType, remodelled).toBlocking().firstOrDefault(null);
+    }
 
-    public static Observable<Ship> getShip(BriteDatabase db, long id){
+    public static Observable<Ship> getShipObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
-                .mapToOne(cursor -> new Ship(
+                .mapToOneOrDefault(cursor -> new Ship(
                         cursor.getLong(0),
                         cursor.getString(1),
                         cursor.getString(2),
-                        ShipTypeAccessor.getShipType(db,cursor.getLong(3)),
+                        ShipTypeAccessor.getShipTypeObservable(db,cursor.getLong(3)),
                         cursor.getInt(4),
                         cursor.getInt(5),
                         cursor.getInt(6)
-                ));
+                ),null);
+    }
+    public static Ship getShip(BriteDatabase db, long id){
+        return getShipObservable(db,id).toBlocking().firstOrDefault(null);
     }
 }

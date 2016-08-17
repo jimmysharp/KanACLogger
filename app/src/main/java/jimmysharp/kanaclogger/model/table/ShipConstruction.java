@@ -22,8 +22,11 @@ public class ShipConstruction {
     public long getId() {
         return id;
     }
-    public Observable<ShipTransaction> getShipTransaction() {
+    public Observable<ShipTransaction> getShipTransactionObservable() {
         return shipTransaction;
+    }
+    public ShipTransaction getShipTransaction(){
+        return shipTransaction.toBlocking().firstOrDefault(null);
     }
     public int getFuel() {
         return fuel;

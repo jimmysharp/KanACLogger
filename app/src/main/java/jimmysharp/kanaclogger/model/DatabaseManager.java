@@ -5,9 +5,10 @@ import android.util.Log;
 import com.squareup.sqlbrite.BriteDatabase;
 import org.threeten.bp.ZonedDateTime;
 import java.util.List;
-
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.BattleTypeAccessor;
+import jimmysharp.kanaclogger.model.table.Card;
+import jimmysharp.kanaclogger.model.table.CardAccessor;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.CardTypeAccessor;
 import jimmysharp.kanaclogger.model.table.MapField;
@@ -34,9 +35,16 @@ public class DatabaseManager {
     }
 
     public void addShipConstruction(ZonedDateTime date, long shipId, long cardTypeId, long fuel, long bullet, long steel,long bauxite){
+        Log.v(TAG,"Card Search Start");
+        Card card = CardAccessor.getCard(db,shipId,cardTypeId);
+        if (card == null){
+            throw new RuntimeException("No such Card");
+        }
+        Log.v(TAG,"Card Search End");
+
         BriteDatabase.Transaction transaction = db.newTransaction();
         try {
-            long shipTransactionId = ShipTransactionAccessor.insert(db, date,shipId,cardTypeId,1);
+            long shipTransactionId = ShipTransactionAccessor.insert(db, date,card.getId(), 1);
             ShipConstructionAccessor.insert(db,shipTransactionId,fuel,bullet,steel,bauxite);
             transaction.markSuccessful();
         } catch (SQLException e) {
@@ -52,9 +60,14 @@ public class DatabaseManager {
     }
 
     public void addShipDrop(ZonedDateTime date, long shipId, long cardTypeId, long subMapId){
+        Card card = CardAccessor.getCard(db,shipId,cardTypeId);
+        if (card == null){
+            throw new RuntimeException("No such Card");
+        }
+
         BriteDatabase.Transaction transaction = db.newTransaction();
         try {
-            long shipTransactionId = ShipTransactionAccessor.insert(db, date,shipId,cardTypeId,1);
+            long shipTransactionId = ShipTransactionAccessor.insert(db, date,card.getId(),1);
             ShipDropAccessor.insert(db,shipTransactionId,subMapId);
             transaction.markSuccessful();
         } catch (SQLException e) {
@@ -70,42 +83,55 @@ public class DatabaseManager {
     }
 
     public Observable<SubMap> getSubMap(long mapFieldId, long battleTypeId){
-        return SubMapAccessor.getSubMap(db,mapFieldId,battleTypeId);
+        return SubMapAccessor.getSubMapObservable(db,mapFieldId,battleTypeId);
     }
 
     public Observable<List<Ship>> getAllShips(){
-        return ShipAccessor.getAllShips(db);
+        return ShipAccessor.getAllShipsObservable(db);
     }
 
     public Observable<List<Ship>> getAllShipsSorted() {
-        return ShipAccessor.getAllShipsSorted(db);
+        return ShipAccessor.getAllShipsSortedObservable(db);
     }
 
     public Observable<List<Ship>> getShips(ShipType shipType, Boolean remodelled){
-        return ShipAccessor.getShips(db,shipType,remodelled);
+        return ShipAccessor.getShipsObservable(db,shipType,remodelled);
     }
 
     public Observable<List<CardType>> getAllCardTypes() {
-        return CardTypeAccessor.getAllCardTypes(db);
+        return CardTypeAccessor.getAllCardTypesObservable(db);
     }
 
     public Observable<List<ShipConstruction>> getAllShipConstructions() {
-        return ShipConstructionAccessor.getAllShipConstructions(db);
+        return ShipConstructionAccessor.getAllShipConstructionsObservable(db);
     }
 
     public Observable<List<ShipDrop>> getAllShipDrops(){
-        return ShipDropAccessor.getAllShipDrops(db);
+        return ShipDropAccessor.getAllShipDropsObservable(db);
     }
 
     public Observable<List<BattleType>> getAllBattleTypes(){
-        return BattleTypeAccessor.getAllBattleTypes(db);
+        return BattleTypeAccessor.getAllBattleTypesObservable(db);
     }
 
     public Observable<List<MapField>> getAllMapFields(){
-        return MapFieldAccessor.getAllMapFields(db);
+        return MapFieldAccessor.getAllMapFieldsObservable(db);
     }
 
     public Observable<List<ShipType>> getAllShipTypes(){
-        return ShipTypeAccessor.getAllShipTypes(db);
+        return ShipTypeAccessor.getAllShipTypesObservable(db);
+    }
+
+    public Observable<List<ShipTransactionSum>> getSumObservable(){
+        return db.createQuery("ShipTransaction", "SELECT * FROM Card" +
+                " LEFT JOIN (SELECT card, SUM(quantity) FROM ShipTransaction GROUP BY card) ON Card._id = card" +
+                " INNER JOIN Ship ON ship = Ship._id" +
+                " ORDER BY Ship.sortId, Ship.remodelled")
+                .mapToList(cursor -> new ShipTransactionSum(
+                        cursor.getLong(0),
+                        ShipAccessor.getShip(db,cursor.getLong(1)),
+                        CardTypeAccessor.getCardType(db,cursor.getLong(2)),
+                        cursor.isNull(4) ? 0 : cursor.getLong(4)
+                ));
     }
 }

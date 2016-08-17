@@ -23,13 +23,19 @@ public class BattleTypeAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<BattleType>> getAllBattleTypes(BriteDatabase db){
+    public static Observable<List<BattleType>> getAllBattleTypesObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)));
     }
-    public static Observable<BattleType> getBattleType(BriteDatabase db, long id){
+    public static List<BattleType> getAllBattleTypes(BriteDatabase db){
+        return getAllBattleTypesObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<BattleType> getBattleTypeObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
                 + " WHERE _id = "+id)
-                .mapToOne(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)));
+                .mapToOneOrDefault(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)),null);
+    }
+    public static BattleType getBattleType(BriteDatabase db, long id){
+        return getBattleTypeObservable(db,id).toBlocking().firstOrDefault(null);
     }
 }

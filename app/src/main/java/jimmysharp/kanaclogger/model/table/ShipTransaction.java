@@ -1,21 +1,18 @@
 package jimmysharp.kanaclogger.model.table;
 
 import org.threeten.bp.ZonedDateTime;
-
 import rx.Observable;
 
 public class ShipTransaction {
     private final long id;
     private final ZonedDateTime date;
-    private final Observable<Ship> ship;
-    private final Observable<CardType> cardType;
+    private final Observable<Card> card;
     private final long quantity;
 
-    public ShipTransaction(long id, ZonedDateTime date, Observable<Ship> ship, Observable<CardType> cardType, long quantity) {
+    public ShipTransaction(long id, ZonedDateTime date, Observable<Card> card, long quantity) {
         this.id = id;
         this.date = date;
-        this.ship = ship;
-        this.cardType = cardType;
+        this.card = card;
         this.quantity = quantity;
     }
 
@@ -25,11 +22,11 @@ public class ShipTransaction {
     public ZonedDateTime getDate() {
         return date;
     }
-    public Observable<Ship> getShip() {
-        return ship;
+    public Observable<Card> getCardObservable() {
+        return card;
     }
-    public Observable<CardType> getCardType() {
-        return cardType;
+    public Card getCard(){
+        return card.toBlocking().firstOrDefault(null);
     }
     public long getQuantity() {
         return quantity;

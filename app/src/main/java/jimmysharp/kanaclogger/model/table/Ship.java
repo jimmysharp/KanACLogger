@@ -30,8 +30,11 @@ public class Ship {
     public String getKana() {
         return kana;
     }
-    public Observable<ShipType> getShipType() {
+    public Observable<ShipType> getShipTypeObservable() {
         return shipType;
+    }
+    public ShipType getShipType(){
+        return shipType.toBlocking().firstOrDefault(null);
     }
     public int getRemodelled() {
         return remodelled;

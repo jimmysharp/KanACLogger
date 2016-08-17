@@ -1,9 +1,7 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-
 import com.squareup.sqlbrite.BriteDatabase;
-
 import java.util.List;
 
 import rx.Observable;
@@ -33,11 +31,11 @@ public class MapFieldAccessor {
         return TABLE_NAME;
     }
 
-    public static Observable<List<MapField>> getAllMapFields(BriteDatabase db){
+    public static Observable<List<MapField>> getAllMapFieldsObservable(BriteDatabase db){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME)
                 .mapToList(cursor -> new MapField(
                         cursor.getLong(0),
-                        MapAreaAccessor.getMapArea(db,cursor.getLong(1)),
+                        MapAreaAccessor.getMapAreaObservable(db,cursor.getLong(1)),
                         cursor.getInt(2),
                         cursor.getString(3),
                         cursor.getString(4),
@@ -46,18 +44,24 @@ public class MapFieldAccessor {
                         cursor.getInt(7)
                 ));
     }
-    public static Observable<MapField> getMapField(BriteDatabase db, long id){
+    public static List<MapField> getAllMapFields(BriteDatabase db){
+        return getAllMapFieldsObservable(db).toBlocking().firstOrDefault(null);
+    }
+    public static Observable<MapField> getMapFieldObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME +
                 " WHERE _id = "+id)
-                .mapToOne(cursor -> new MapField(
+                .mapToOneOrDefault(cursor -> new MapField(
                         cursor.getLong(0),
-                        MapAreaAccessor.getMapArea(db,cursor.getLong(1)),
+                        MapAreaAccessor.getMapAreaObservable(db,cursor.getLong(1)),
                         cursor.getInt(2),
                         cursor.getString(3),
                         cursor.getString(4),
                         cursor.getString(5),
                         cursor.getString(6),
                         cursor.getInt(7)
-                ));
+                ),null);
+    }
+    public static MapField getMapField(BriteDatabase db, long id){
+        return getMapFieldObservable(db, id).toBlocking().firstOrDefault(null);
     }
 }
