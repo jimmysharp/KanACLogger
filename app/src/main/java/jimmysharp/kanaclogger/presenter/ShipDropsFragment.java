@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-
+import android.widget.Toast;
+import org.threeten.bp.ZonedDateTime;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.table.Card;
 
-public class ShipDropsFragment extends Fragment {
+public class ShipDropsFragment extends Fragment implements AddShipDropListener {
     private static String DIALOG_TAG = "addDropDialog";
 
     private ShipDropsRecyclerAdapter adapter;
@@ -59,5 +61,12 @@ public class ShipDropsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         this.db = null;
+    }
+
+    @Override
+    public void onAddNewDrop(NewDrop drop) {
+        Card card = drop.getCard();
+        db.addShipDrop(ZonedDateTime.now(),card.getShip().getId(),card.getCardType().getId(),drop.getSubMap().getId());
+        Toast.makeText(this.getActivity(),getString(R.string.msg_add_drop_success),Toast.LENGTH_SHORT).show();
     }
 }

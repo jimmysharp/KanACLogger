@@ -2,22 +2,16 @@ package jimmysharp.kanaclogger.presenter;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.SQLException;
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +19,7 @@ import android.widget.Toast;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.table.BattleType;
+import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
@@ -41,6 +36,7 @@ public class AddShipDropDialog extends DialogFragment {
     private ShipsAdapter ships = null;
     private CardTypesAdapter cardTypes = null;
     private DatabaseManager db = null;
+    private AddShipDropListener listener;
 
     private Spinner spinnerMapFields;
     private Spinner spinnerBattleTypes;
@@ -115,6 +111,8 @@ public class AddShipDropDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
+        listener = (AddShipDropListener) getParentFragment();
+
         return dialog;
     }
 
@@ -133,23 +131,31 @@ public class AddShipDropDialog extends DialogFragment {
         long battleTypeId = ((BattleType)spinnerBattleTypes.getSelectedItem()).getId();
         long shipId = ((Ship)spinnerShips.getSelectedItem()).getId();
         long cardTypeId = ((CardType)spinnerCardTypes.getSelectedItem()).getId();
+        Card card;
 
-        SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).toBlocking().first();
+        SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).toBlocking().firstOrDefault(null);
         if (subMap == null) {
             Log.e(TAG,"Failed to add drop: : No such submap ("+mapFieldId+","+battleTypeId+")");
             Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
             return;
-        } else{
-            try {
-                db.addShipDrop(shipId,cardTypeId,subMap.getId());
-            } catch (RuntimeException e){
-                Log.e(TAG,"Failed to add drop: Database Error: "+e.getMessage());
-                Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
-                return;
-            }
         }
 
-        Toast.makeText(this.getActivity(),getString(R.string.msg_add_drop_success),Toast.LENGTH_SHORT).show();
+        try {
+            card = db.getCard(shipId,cardTypeId);
+            if (card == null) throw new RuntimeException("No such card: shipId="+shipId+",cardTypeId="+cardTypeId);
+        } catch (RuntimeException e){
+            Log.e(TAG,"Failed to add drop: Database Error: "+e.getMessage());
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        try {
+            listener.onAddNewDrop(new NewDrop(card,subMap));
+        } catch (RuntimeException e){
+            Log.e(TAG,"Failed to add drop: Database Error: "+e.getMessage());
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();
+            return;
+        }
         dismiss();
     }
 

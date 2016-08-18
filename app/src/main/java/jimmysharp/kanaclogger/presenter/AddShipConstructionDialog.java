@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipType;
@@ -34,6 +35,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     private ShipsAdapter ships = null;
     private CardTypesAdapter cardTypes = null;
     private DatabaseManager db = null;
+    private AddShipConstructionListener listener;
 
     private EditText textFuel;
     private EditText textBullet;
@@ -112,6 +114,8 @@ public class AddShipConstructionDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
+        listener = (AddShipConstructionListener) getParentFragment();
+
         return dialog;
     }
 
@@ -127,6 +131,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     public void onOKClicked(){
         int fuel,bullet,steel,bauxite;
         long shipId,cardTypeId;
+        Card card;
 
         try {
             fuel = Integer.parseInt(textFuel.getText().toString());
@@ -151,14 +156,21 @@ public class AddShipConstructionDialog extends DialogFragment {
         }
 
         try {
-            db.addShipConstruction(shipId,cardTypeId,fuel,bullet,steel,bauxite);
+            card = db.getCard(shipId,cardTypeId);
+            if (card == null) new RuntimeException("No such card: shipId="+shipId+",cardTypeId="+cardTypeId);
         } catch (RuntimeException e){
             Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
             Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();
             return;
         }
 
-        Toast.makeText(this.getActivity(),getString(R.string.msg_add_construction_success),Toast.LENGTH_SHORT).show();
+        try {
+            listener.onAddConstruction(new NewConstruction(card,fuel,bullet,steel,bauxite));
+        } catch (RuntimeException e){
+            Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
+            Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();
+            return;
+        }
         dismiss();
     }
 

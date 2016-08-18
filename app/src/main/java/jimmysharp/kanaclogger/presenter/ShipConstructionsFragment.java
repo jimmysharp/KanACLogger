@@ -7,10 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.table.Card;
 
-public class ShipConstructionsFragment extends Fragment {
+public class ShipConstructionsFragment extends Fragment implements AddShipConstructionListener{
     private static String DIALOG_TAG = "addConstructionDialog";
 
     private ShipConstructionsRecyclerAdapter adapter;
@@ -57,5 +60,18 @@ public class ShipConstructionsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         this.db = null;
+    }
+
+    @Override
+    public void onAddConstruction(NewConstruction construction) {
+        Card card = construction.getCard();
+        db.addShipConstruction(
+                card.getShip().getId(),
+                card.getCardType().getId(),
+                construction.getFuel(),
+                construction.getBullet(),
+                construction.getSteel(),
+                construction.getBauxite());
+        Toast.makeText(this.getActivity(),getString(R.string.msg_add_construction_success),Toast.LENGTH_SHORT).show();
     }
 }

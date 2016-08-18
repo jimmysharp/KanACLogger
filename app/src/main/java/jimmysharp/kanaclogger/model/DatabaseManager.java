@@ -134,4 +134,8 @@ public class DatabaseManager {
                         cursor.isNull(4) ? 0 : cursor.getLong(4)
                 ));
     }
+
+    public Card getCard(long shipId, long cardTypeId){
+        return CardAccessor.getCard(db,shipId,cardTypeId);
+    }
 }
