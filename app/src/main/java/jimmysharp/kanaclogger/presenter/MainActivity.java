@@ -60,10 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        if (initializer != null) {
+            initializer.close();
+            initializer.dispose();
+            initializer = null;
+        }
         super.onStop();
-        initializer.close();
-        initializer.dispose();
-        initializer = null;
     }
 
     public DatabaseManager getDB(){
