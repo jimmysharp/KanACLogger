@@ -8,7 +8,6 @@ import android.os.Parcelable;
 import android.support.design.widget.TabLayout;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,13 +58,13 @@ public class ContentsFragment extends Fragment {
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new ShipConstructionsFragment();
+                    fragment = new ShipBulkTransactionFragment();
                     break;
                 case 1:
-                    fragment = new ShipDropsFragment();
+                    fragment = new ShipConstructionsFragment();
                     break;
                 case 2:
-                    fragment = new ShipManualTransactionFragment();
+                    fragment = new ShipDropsFragment();
                     break;
                 case 3:
                     fragment = new ShipListFragment();
@@ -84,11 +83,11 @@ public class ContentsFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.tab_construction);
+                    return getString(R.string.tab_bulk);
                 case 1:
-                    return getString(R.string.tab_drop);
+                    return getString(R.string.tab_construction);
                 case 2:
-                    return getString(R.string.tab_manual);
+                    return getString(R.string.tab_drop);
                 case 3:
                     return getString(R.string.tab_list);
             }

@@ -65,7 +65,7 @@ public class ShipConstructionsFragment extends Fragment implements AddShipConstr
     @Override
     public void onAddConstruction(NewConstruction construction) {
         Card card = construction.getCard();
-        db.addShipConstruction(
+        db.addShipConstructionWithTransaction(
                 card.getShip().getId(),
                 card.getCardType().getId(),
                 construction.getFuel(),

@@ -66,7 +66,7 @@ public class ShipDropsFragment extends Fragment implements AddShipDropListener {
     @Override
     public void onAddNewDrop(NewDrop drop) {
         Card card = drop.getCard();
-        db.addShipDrop(ZonedDateTime.now(),card.getShip().getId(),card.getCardType().getId(),drop.getSubMap().getId());
+        db.addShipDropWithTransaction(ZonedDateTime.now(),card.getShip().getId(),card.getCardType().getId(),drop.getSubMap().getId());
         Toast.makeText(this.getActivity(),getString(R.string.msg_add_drop_success),Toast.LENGTH_SHORT).show();
     }
 }

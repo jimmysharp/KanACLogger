@@ -2,7 +2,6 @@ package jimmysharp.kanaclogger.presenter;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -12,12 +11,9 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
@@ -114,7 +110,7 @@ public class AddShipConstructionDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
-        listener = (AddShipConstructionListener) getParentFragment();
+        listener = (AddShipConstructionListener) getTargetFragment();
 
         return dialog;
     }

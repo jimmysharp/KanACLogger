@@ -26,4 +26,10 @@
     <string name="msg_add_construction_failed">Failed to add new construction.</string>
     <string name="msg_add_drop_success">New drop is succesfully added.</string>
     <string name="msg_add_drop_failed">Failed to add new drop.</string>
+    <string name="text_add_construction">Add construction</string>
+    <string name="text_add_drop">Add drop</string>
+    <string name="text_add_save">Save</string>
+    <string name="msg_bulk_insert_success">Bulk insert success.</string>
+    <string name="msg_bulk_insert_failed">Bulk insert failed.</string>
+    <string name="tab_bulk">Bulk register</string>
 </resources>

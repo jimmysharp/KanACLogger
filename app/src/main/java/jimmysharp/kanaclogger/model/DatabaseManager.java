@@ -34,13 +34,11 @@ public class DatabaseManager {
         this.db = db;
     }
 
-    public void addShipConstruction(ZonedDateTime date, long shipId, long cardTypeId, long fuel, long bullet, long steel,long bauxite){
-        Log.v(TAG,"Card Search Start");
+    public void addShipConstructionWithTransaction(ZonedDateTime date, long shipId, long cardTypeId, long fuel, long bullet, long steel, long bauxite){
         Card card = CardAccessor.getCard(db,shipId,cardTypeId);
         if (card == null){
             throw new RuntimeException("No such Card");
         }
-        Log.v(TAG,"Card Search End");
 
         BriteDatabase.Transaction transaction = db.newTransaction();
         try {
@@ -55,11 +53,25 @@ public class DatabaseManager {
         }
     }
 
-    public void addShipConstruction(long shipId, long cardTypeId, long fuel,long bullet, long steel, long bauxite){
-        this.addShipConstruction(ZonedDateTime.now(),shipId,cardTypeId,fuel,bullet,steel,bauxite);
+    public void addShipConstructionWithTransaction(long shipId, long cardTypeId, long fuel, long bullet, long steel, long bauxite){
+        this.addShipConstructionWithTransaction(ZonedDateTime.now(),shipId,cardTypeId,fuel,bullet,steel,bauxite);
     }
 
-    public void addShipDrop(ZonedDateTime date, long shipId, long cardTypeId, long subMapId){
+    public void addShipConstructionRaw(ZonedDateTime date, long cardId, long fuel, long bullet, long steel, long bauxite){
+        try {
+            long shipTransactionId = ShipTransactionAccessor.insert(db, date,cardId, 1);
+            ShipConstructionAccessor.insert(db,shipTransactionId,fuel,bullet,steel,bauxite);
+        } catch (SQLException e) {
+            Log.e(TAG,"Failed to insert new construction: "+e.getMessage());
+            throw new RuntimeException("Failed to insert new construction",e);
+        }
+    }
+
+    public void addShipConstructionRaw(long cardId, long fuel, long bullet, long steel, long bauxite){
+        this.addShipConstructionRaw(ZonedDateTime.now(),cardId,fuel,bullet,steel,bauxite);
+    }
+
+    public void addShipDropWithTransaction(ZonedDateTime date, long shipId, long cardTypeId, long subMapId){
         Card card = CardAccessor.getCard(db,shipId,cardTypeId);
         if (card == null){
             throw new RuntimeException("No such Card");
@@ -78,8 +90,22 @@ public class DatabaseManager {
         }
     }
 
-    public void addShipDrop(long shipId, long cardTypeId, long subMapId){
-        this.addShipDrop(ZonedDateTime.now(),shipId,cardTypeId,subMapId);
+    public void addShipDropWithTransaction(long shipId, long cardTypeId, long subMapId){
+        this.addShipDropWithTransaction(ZonedDateTime.now(),shipId,cardTypeId,subMapId);
+    }
+
+    public void addShipDropRaw(ZonedDateTime date, long cardId, long subMapId){
+        try {
+            long shipTransactionId = ShipTransactionAccessor.insert(db, date,cardId,1);
+            ShipDropAccessor.insert(db,shipTransactionId,subMapId);
+        } catch (SQLException e) {
+            Log.e(TAG,"Failed to insert new drop: "+e.getMessage());
+            throw new RuntimeException("Failed to insert new drop",e);
+        }
+    }
+
+    public void addShipDropRaw(long cardId, long subMapId){
+        this.addShipDropRaw(ZonedDateTime.now(),cardId,subMapId);
     }
 
     public Observable<SubMap> getSubMap(long mapFieldId, long battleTypeId){
@@ -137,5 +163,9 @@ public class DatabaseManager {
 
     public Card getCard(long shipId, long cardTypeId){
         return CardAccessor.getCard(db,shipId,cardTypeId);
+    }
+
+    public BriteDatabase getDatabase(){
+        return db;
     }
 }

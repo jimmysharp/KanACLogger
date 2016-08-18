@@ -111,7 +111,7 @@ public class AddShipDropDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
-        listener = (AddShipDropListener) getParentFragment();
+        listener = (AddShipDropListener) getTargetFragment();
 
         return dialog;
     }
