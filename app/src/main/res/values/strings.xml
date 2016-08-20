@@ -32,4 +32,7 @@
     <string name="msg_bulk_insert_success">Bulk insert success.</string>
     <string name="msg_bulk_insert_failed">Bulk insert failed.</string>
     <string name="tab_bulk">Bulk register</string>
+    <string name="text_pref_cat_external">External Cooperation</string>
+    <string name="text_pref_cat_other">Other</string>
+    <string name="text_pref_twitter_coop">Twitter cooperation</string>
 </resources>
