@@ -35,4 +35,11 @@
     <string name="text_pref_cat_external">External Cooperation</string>
     <string name="text_pref_cat_other">Other</string>
     <string name="text_pref_twitter_coop">Twitter cooperation</string>
+    <string name="text_pref_twitter_tweet_enable">Enable tweet</string>
+    <string name="text_pref_twitter_tweet_enable_sum">Tweet every bulk insert</string>
+    <string name="text_pref_twitter_hashtag_text">Hashtag text</string>
+    <string name="text_pref_twitter_hashtag_enable">Enable hashtag</string>
+    <string name="text_pref_twitter_hashtag_text_dialog">Input hashtag(max 10 characters)</string>
+    <string name="text_pref_twitter_acount">Twitter account</string>
+    <string name="text_pref_twitter_account_unregister">unregisterd</string>
 </resources>

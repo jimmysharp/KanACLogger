@@ -36,4 +36,11 @@
     <string name="text_pref_cat_external">外部連携</string>
     <string name="text_pref_cat_other">その他</string>
     <string name="text_pref_twitter_coop">Twitter連携</string>
+    <string name="text_pref_twitter_tweet_enable">ツイートする</string>
+    <string name="text_pref_twitter_tweet_enable_sum">一括登録時に内容をツイート</string>
+    <string name="text_pref_twitter_hashtag_text">ハッシュタグ</string>
+    <string name="text_pref_twitter_hashtag_enable">ハッシュタグを付加する</string>
+    <string name="text_pref_twitter_hashtag_text_dialog">ハッシュタグ(最大10文字)</string>
+    <string name="text_pref_twitter_acount">Twitterアカウント</string>
+    <string name="text_pref_twitter_account_unregister">未認証</string>
 </resources>
