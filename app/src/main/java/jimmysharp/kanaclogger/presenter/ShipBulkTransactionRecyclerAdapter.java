@@ -46,6 +46,11 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
         ZonedDateTime date = ZonedDateTime.now();
         BriteDatabase dbRaw = db.getDatabase();
 
+        if (items == null || items.size() == 0){
+            Log.e("BulkAdapter","No insert item");
+            throw new RuntimeException("No insert item");
+        }
+
         BriteDatabase.Transaction transaction = dbRaw.newTransaction();
         try {
             for (BulkTransactionViewItem item : items) {
@@ -61,6 +66,14 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
 
         items.clear();
         notifyDataSetChanged();
+    }
+
+    public List<String> getItemString(){
+        List<String> result = new LinkedList<>();
+        for (BulkTransactionViewItem item : items){
+            result.add(item.toString());
+        }
+        return result;
     }
 
     @Override
@@ -163,6 +176,16 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
                             construction.getSteel(),
                             construction.getBauxite()));
         }
+
+        @Override
+        public String toString() {
+            return "建造 "+String.format(Locale.US, "%d/%d/%d/%d",
+                    construction.getFuel(),
+                    construction.getBullet(),
+                    construction.getSteel(),
+                    construction.getBauxite())
+                    +" : "+ship.getName()+" "+cardType.getName();
+        }
     }
 
     public class NewDropViewItem implements BulkTransactionViewItem {
@@ -200,6 +223,12 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
             ((TextView)(holder.itemView.findViewById(R.id.bulk_ship_name))).setText(ship.getName());
             ((TextView)(holder.itemView.findViewById(R.id.bulk_drop_map_field))).setText(mapField.getIdName());
             ((TextView)(holder.itemView.findViewById(R.id.bulk_drop_battle_type))).setText(battleType.getName());
+        }
+
+        @Override
+        public String toString() {
+            return "ドロップ "+mapField.getIdName()+battleType.getName()
+                    +" : "+ship.getName()+" "+cardType.getName();
         }
     }
 }

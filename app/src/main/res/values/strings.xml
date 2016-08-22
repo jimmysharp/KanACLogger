@@ -41,5 +41,11 @@
     <string name="text_pref_twitter_hashtag_enable">Enable hashtag</string>
     <string name="text_pref_twitter_hashtag_text_dialog">Input hashtag(max 10 characters)</string>
     <string name="text_pref_twitter_acount">Twitter account</string>
-    <string name="text_pref_twitter_account_unregister">unregisterd</string>
+    <string name="text_pref_twitter_account_unregistered">unregistered</string>
+    <string name="text_pref_twitter_account_registered">registered</string>
+    <string name="msg_twitter_oauth_success">Twitter authentication success.</string>
+    <string name="msg_twitter_oauth_failed">Twitter authentication failed.</string>
+    <string name="msg_twitter_oauth_url_failed">Obtaining Twitter authentication URL failed</string>
+    <string name="msg_twitter_tweet_success">Success to tweet.</string>
+    <string name="msg_twitter_tweet_failed">Failed to tweet.</string>
 </resources>

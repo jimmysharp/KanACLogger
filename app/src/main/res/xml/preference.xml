@@ -6,8 +6,9 @@
         <PreferenceScreen
             android:title="@string/text_pref_twitter_coop">
             <Preference
+                android:key="twitter_authentication"
                 android:title="@string/text_pref_twitter_acount"
-                android:summary="@string/text_pref_twitter_account_unregister" />
+                android:summary="@string/text_pref_twitter_account_unregistered" />
             <SwitchPreference
                 android:key="is_tweet_enabled"
                 android:defaultValue="false"

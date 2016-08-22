@@ -1,21 +1,133 @@
 package jimmysharp.kanaclogger.presenter;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.EditTextPreference;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
-
+import android.util.Log;
+import android.widget.Toast;
 import jimmysharp.kanaclogger.R;
+import rx.SingleSubscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 
-public class SettingsFragment extends PreferenceFragment{
+public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
+    private static final String TAG = SettingsFragment.class.getSimpleName();
+    private CompositeSubscription subscription;
+    private TwitterManager twitter;
+    private RequestToken requestToken = null;
+
     public SettingsFragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        subscription = new CompositeSubscription();
+
         addPreferencesFromResource(R.xml.preference);
+        twitter = new TwitterManager(this.getActivity());
+
+        onSharedPreferenceChanged(null,"hashtag_text");
+        onSharedPreferenceChanged(null,"twitter_authentication");
+
+        Preference preference = (Preference) findPreference("twitter_authentication");
+        preference.setOnPreferenceClickListener(preference1 -> {
+            subscription.add(twitter.getAccessTokenUrl()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleSubscriber<RequestToken>() {
+                @Override
+                public void onSuccess(RequestToken token) {
+                    requestToken = token;
+                    Log.v(TAG,"Move to browser for Twitter authentication");
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(token.getAuthorizationURL()));
+                    startActivity(intent);
+                }
+                @Override
+                public void onError(Throwable error) {
+                    Toast.makeText(getActivity(),getString(R.string.msg_twitter_oauth_url_failed),Toast.LENGTH_LONG).show();
+                    Log.e(TAG,"Failed to get Twitter oauth URL",error);
+                }
+            }));
+            return true;
+        });
+    }
+
+    public void setAccessToken(Uri uri){
+        if (uri != null && requestToken != null){
+            subscription.add(twitter.getAndSaveAccessToken(getActivity(),requestToken,uri)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new SingleSubscriber<AccessToken>() {
+                @Override
+                public void onSuccess(AccessToken token) {
+                    Toast.makeText(getActivity(),getString(R.string.msg_twitter_oauth_success),Toast.LENGTH_SHORT).show();
+                    onSharedPreferenceChanged(null,"twitter_authentication");
+                }
+
+                @Override
+                public void onError(Throwable error) {
+                    Toast.makeText(getActivity(),getString(R.string.msg_twitter_oauth_failed),Toast.LENGTH_LONG).show();
+                    Log.e(TAG,"Failed to get Twitter access token",error);
+                }
+            }));
+        }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
+        subscription.unsubscribe();
+        subscription = new CompositeSubscription();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(twitter != null){
+            twitter.dispose();
+            twitter = null;
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key){
+            case "hashtag_text":
+                EditTextPreference editTextPreference = (EditTextPreference) findPreference("hashtag_text");
+                editTextPreference.setSummary(editTextPreference.getText());
+                break;
+            case "twitter_authentication":
+                Preference preference = (Preference) findPreference("twitter_authentication");
+                if (twitter.isAccessTokenStored()){
+                    preference.setSummary(getString(R.string.text_pref_twitter_account_registered));
+                } else {
+                    preference.setSummary(getString(R.string.text_pref_twitter_account_unregistered));
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

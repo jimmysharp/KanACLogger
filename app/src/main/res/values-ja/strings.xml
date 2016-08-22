@@ -42,5 +42,11 @@
     <string name="text_pref_twitter_hashtag_enable">ハッシュタグを付加する</string>
     <string name="text_pref_twitter_hashtag_text_dialog">ハッシュタグ(最大10文字)</string>
     <string name="text_pref_twitter_acount">Twitterアカウント</string>
-    <string name="text_pref_twitter_account_unregister">未認証</string>
+    <string name="text_pref_twitter_account_unregistered">未認証</string>
+    <string name="text_pref_twitter_account_registered">認証済み</string>
+    <string name="msg_twitter_oauth_success">Twitter認証に成功しました</string>
+    <string name="msg_twitter_oauth_failed">Twitter認証に失敗しました</string>
+    <string name="msg_twitter_oauth_url_failed">Twitter認証URLの取得に失敗しました</string>
+    <string name="msg_twitter_tweet_success">ツイートしました</string>
+    <string name="msg_twitter_tweet_failed">ツイートに失敗しました</string>
 </resources>
