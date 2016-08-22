@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="@string/text_pref_cat_external">
+        <PreferenceScreen
+            android:title="@string/text_pref_twitter_coop">
+            <Preference
+                android:key="twitter_authentication"
+                android:title="@string/text_pref_twitter_acount"
+                android:summary="@string/text_pref_twitter_account_unregistered" />
+            <SwitchPreference
+                android:key="is_tweet_enabled"
+                android:defaultValue="false"
+                android:title="@string/text_pref_twitter_tweet_enable"
+                android:summary="@string/text_pref_twitter_tweet_enable_sum" />
+            <SwitchPreference
+                android:key="is_tweet_hashtag_enabled"
+                android:defaultValue="true"
+                android:title="@string/text_pref_twitter_hashtag_enable"/>
+            <EditTextPreference
+                android:key="hashtag_text"
+                android:defaultValue="@string/app_name"
+                android:title="@string/text_pref_twitter_hashtag_text"
+                android:maxLength="20"/>
+        </PreferenceScreen>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/text_pref_cat_other">
+    </PreferenceCategory>
+</PreferenceScreen>
