@@ -49,4 +49,5 @@
     <string name="msg_twitter_oauth_url_failed">Twitter認証URLの取得に失敗しました</string>
     <string name="msg_twitter_tweet_success">ツイートしました</string>
     <string name="msg_twitter_tweet_failed">ツイートに失敗しました</string>
+    <string name="text_license">ライセンス</string>
 </resources>

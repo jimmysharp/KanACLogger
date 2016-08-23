@@ -48,4 +48,6 @@
     <string name="msg_twitter_oauth_url_failed">Obtaining Twitter authentication URL failed</string>
     <string name="msg_twitter_tweet_success">Success to tweet.</string>
     <string name="msg_twitter_tweet_failed">Failed to tweet.</string>
+    <string name="path_license" translatable="false">file:///android_asset/licenses.html</string>
+    <string name="text_license">License</string>
 </resources>

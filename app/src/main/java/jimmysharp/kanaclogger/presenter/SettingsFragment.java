@@ -1,5 +1,6 @@
 package jimmysharp.kanaclogger.presenter;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import twitter4j.auth.RequestToken;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
+    private static final String LICENSE_DIALOG_TAG = "licenseDialog";
     private CompositeSubscription subscription;
     private TwitterManager twitter;
     private RequestToken requestToken = null;
@@ -37,8 +39,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         onSharedPreferenceChanged(null,"hashtag_text");
         onSharedPreferenceChanged(null,"twitter_authentication");
 
-        Preference preference = (Preference) findPreference("twitter_authentication");
-        preference.setOnPreferenceClickListener(preference1 -> {
+        Preference twitterAuthPref = (Preference) findPreference("twitter_authentication");
+        twitterAuthPref.setOnPreferenceClickListener(preference1 -> {
             subscription.add(twitter.getAccessTokenUrl()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -56,6 +58,15 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     Log.e(TAG,"Failed to get Twitter oauth URL",error);
                 }
             }));
+            return true;
+        });
+
+        Preference licensePref = (Preference) findPreference("license");
+        licensePref.setOnPreferenceClickListener(preference -> {
+            final LicenseDialog licenseDialog = new LicenseDialog();
+            licenseDialog.setTargetFragment(this,100);
+            licenseDialog.show(getChildFragmentManager(),LICENSE_DIALOG_TAG);
+
             return true;
         });
     }
@@ -95,6 +106,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     @Override
     public void onPause() {
         super.onPause();
+
+        Fragment dialog = getChildFragmentManager().findFragmentByTag(LICENSE_DIALOG_TAG);
+        if (dialog != null) {
+            getChildFragmentManager().beginTransaction().remove(dialog).commit();
+        }
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
         subscription.unsubscribe();
