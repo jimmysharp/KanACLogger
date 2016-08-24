@@ -18,11 +18,11 @@ import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewConstruction;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipType;
-import rx.Subscription;
 
 public class AddShipConstructionDialog extends DialogFragment {
     private String TAG = AddShipConstructionDialog.class.getSimpleName();

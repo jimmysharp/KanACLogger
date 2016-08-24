@@ -11,6 +11,7 @@ import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.Toast;
 import jimmysharp.kanaclogger.R;
+import jimmysharp.kanaclogger.model.TwitterManager;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;

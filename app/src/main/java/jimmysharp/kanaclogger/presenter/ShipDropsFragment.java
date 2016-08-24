@@ -11,6 +11,7 @@ import android.widget.Toast;
 import org.threeten.bp.ZonedDateTime;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.table.Card;
 
 public class ShipDropsFragment extends Fragment implements AddShipDropListener {

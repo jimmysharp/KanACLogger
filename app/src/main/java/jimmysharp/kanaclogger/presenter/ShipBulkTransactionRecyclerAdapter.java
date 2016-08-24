@@ -18,6 +18,8 @@ import java.util.Locale;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewConstruction;
+import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;

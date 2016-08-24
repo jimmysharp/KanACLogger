@@ -1,8 +1,9 @@
-package jimmysharp.kanaclogger;
+package jimmysharp.kanaclogger.presenter;
 
 import android.app.Application;
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
+import jimmysharp.kanaclogger.BuildConfig;
 import twitter4j.TwitterFactory;
 
 public class MainApplication extends Application {

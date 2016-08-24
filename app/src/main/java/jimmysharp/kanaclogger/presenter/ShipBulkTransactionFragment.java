@@ -16,6 +16,9 @@ import java.util.List;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewConstruction;
+import jimmysharp.kanaclogger.model.NewDrop;
+import jimmysharp.kanaclogger.model.TwitterManager;
 import rx.Single;
 import rx.SingleSubscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -141,7 +144,6 @@ public class ShipBulkTransactionFragment extends Fragment implements AddTypeSele
 
                 List<Single<Status>> tweets = twitterManager.tweet(items,hashtag);
                 for (Single<Status> tweet : tweets) {
-                    Log.v(TAG,"subscribe");
                     subscription.add(tweet
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -161,7 +163,7 @@ public class ShipBulkTransactionFragment extends Fragment implements AddTypeSele
                 }
             }
         } catch (RuntimeException e){
-            Log.e("BulkFragment","Failed to bulk insert: "+e.getMessage());
+            Log.e(TAG,"Failed to bulk insert: "+e.getMessage());
             Toast.makeText(this.getActivity(),getString(R.string.msg_bulk_insert_failed),Toast.LENGTH_LONG).show();
         }
     }
