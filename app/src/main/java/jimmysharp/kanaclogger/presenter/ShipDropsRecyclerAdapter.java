@@ -12,6 +12,7 @@ import java.util.List;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
+import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.MapArea;
 import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
@@ -48,12 +49,14 @@ public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
             ShipDrop item = items.get(items.size()-position-1);
             ShipTransaction transaction = item.getShipTransaction();
             Card card = transaction.getCard();
+            CardType cardType = card.getCardType();
             Ship ship = card.getShip();
             SubMap subMap = item.getSubMap();
             MapField mapField = subMap.getMapField();
             BattleType battleType = subMap.getBattleType();
 
             ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.card_type))).setText(cardType.getName());
             ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
                     transaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
             ((TextView)(holder.itemView.findViewById(R.id.drop_map_field))).setText(mapField.getIdName());
@@ -94,6 +97,7 @@ public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
 
     public class ShipDropsRecyclerViewHolder extends RecyclerView.ViewHolder{
         final TextView shipName;
+        final TextView cardType;
         final TextView mapField;
         final TextView battleType;
         final TextView date;
@@ -101,6 +105,7 @@ public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.
         public ShipDropsRecyclerViewHolder(View itemView) {
             super(itemView);
             shipName = (TextView) itemView.findViewById(R.id.ship_name);
+            cardType = (TextView) itemView.findViewById(R.id.card_type);
             mapField = (TextView) itemView.findViewById(R.id.drop_map_field);
             battleType = (TextView) itemView.findViewById(R.id.drop_battle_type);
             date = (TextView) itemView.findViewById(R.id.date);

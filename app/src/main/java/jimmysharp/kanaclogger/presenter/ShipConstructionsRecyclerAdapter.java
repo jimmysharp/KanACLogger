@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.table.Card;
+import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipConstruction;
 import jimmysharp.kanaclogger.model.table.ShipTransaction;
@@ -47,9 +48,11 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
             ShipConstruction item = items.get(items.size()-position-1);
             ShipTransaction transaction = item.getShipTransaction();
             Card card = transaction.getCard();
+            CardType cardType = card.getCardType();
             Ship ship = card.getShip();
 
             ((TextView)(holder.itemView.findViewById(R.id.ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.card_type))).setText(cardType.getName());
             ((TextView)(holder.itemView.findViewById(R.id.date))).setText(
                     transaction.getDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd")));
             ((TextView)(holder.itemView.findViewById(R.id.resources))).setText(
@@ -91,12 +94,14 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
 
     public class ShipConstructionRecyclerViewHolder extends RecyclerView.ViewHolder{
         final TextView shipName;
+        final TextView cardType;
         final TextView date;
         final TextView resources;
 
         public ShipConstructionRecyclerViewHolder(View itemView) {
             super(itemView);
             shipName = (TextView) itemView.findViewById(R.id.ship_name);
+            cardType = (TextView) itemView.findViewById(R.id.card_type);
             date = (TextView) itemView.findViewById(R.id.date);
             resources = (TextView) itemView.findViewById(R.id.resources);
         }
