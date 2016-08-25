@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
@@ -25,7 +26,6 @@ import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipType;
 import jimmysharp.kanaclogger.model.table.SubMap;
-import rx.Subscription;
 
 public class AddShipDropDialog extends DialogFragment {
     private String TAG = AddShipDropDialog.class.getSimpleName();

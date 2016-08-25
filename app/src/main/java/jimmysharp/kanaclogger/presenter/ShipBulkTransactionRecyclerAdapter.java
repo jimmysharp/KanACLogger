@@ -18,6 +18,8 @@ import java.util.Locale;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewConstruction;
+import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
@@ -109,25 +111,29 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
 
     public class NewConstructionViewHolder extends RecyclerView.ViewHolder{
         final TextView shipName;
+        final TextView cardType;
         final TextView resources;
 
         public NewConstructionViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.ship_name);
-            resources = (TextView) itemView.findViewById(R.id.resources);
+            shipName = (TextView) itemView.findViewById(R.id.bulk_ship_name);
+            cardType = (TextView) itemView.findViewById(R.id.bulk_card_type);
+            resources = (TextView) itemView.findViewById(R.id.bulk_resources);
         }
     }
 
     public class NewDropViewHolder extends RecyclerView.ViewHolder{
         final TextView shipName;
+        final TextView cardType;
         final TextView mapField;
         final TextView battleType;
 
         public NewDropViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.ship_name);
-            mapField = (TextView) itemView.findViewById(R.id.drop_map_field);
-            battleType = (TextView) itemView.findViewById(R.id.drop_battle_type);
+            shipName = (TextView) itemView.findViewById(R.id.bulk_ship_name);
+            cardType = (TextView) itemView.findViewById(R.id.bulk_card_type);
+            mapField = (TextView) itemView.findViewById(R.id.bulk_drop_map_field);
+            battleType = (TextView) itemView.findViewById(R.id.bulk_drop_battle_type);
         }
     }
 
@@ -169,6 +175,7 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
         @Override
         public void setViewHolder(RecyclerView.ViewHolder holder) {
             ((TextView)(holder.itemView.findViewById(R.id.bulk_ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.bulk_card_type))).setText(cardType.getName());
             ((TextView)(holder.itemView.findViewById(R.id.bulk_resources))).setText(
                     String.format(Locale.US, "%d/%d/%d/%d",
                             construction.getFuel(),
@@ -221,6 +228,7 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
         @Override
         public void setViewHolder(RecyclerView.ViewHolder holder) {
             ((TextView)(holder.itemView.findViewById(R.id.bulk_ship_name))).setText(ship.getName());
+            ((TextView)(holder.itemView.findViewById(R.id.bulk_card_type))).setText(cardType.getName());
             ((TextView)(holder.itemView.findViewById(R.id.bulk_drop_map_field))).setText(mapField.getIdName());
             ((TextView)(holder.itemView.findViewById(R.id.bulk_drop_battle_type))).setText(battleType.getName());
         }

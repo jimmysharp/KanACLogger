@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.presenter;
+package jimmysharp.kanaclogger.model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

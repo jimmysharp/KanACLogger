@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.presenter;
+package jimmysharp.kanaclogger.model;
 
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.SubMap;

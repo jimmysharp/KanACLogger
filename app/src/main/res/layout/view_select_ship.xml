@@ -1,24 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.percent.PercentRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:columnCount="2"
     android:rowCount="3"
     android:layout_marginStart="10dp"
-    android:padding="5dp">
+    android:padding="10dp"
+    tools:context=".presenter.MainActivity">
 
     <TextView
+        android:id="@+id/text_ship_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/text_ship_type" />
+        android:text="@string/text_ship_type"
+        app:layout_widthPercent="30%" />
 
     <Spinner
+        android:id="@+id/spinner_ship_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner_ship_type" />
+        app:layout_widthPercent="70%"
+        android:layout_toEndOf="@id/text_ship_type"
+        android:layout_alignBaseline="@id/text_ship_type"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/text_ship_name"
@@ -26,12 +34,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/text_ship_name" />
+        android:text="@string/text_ship_name"
+        app:layout_widthPercent="30%"
+        android:layout_below="@id/text_ship_type"
+        android:layout_marginTop="10dp"/>
 
     <Spinner
+        android:id="@+id/spinner_ship_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner_ship_name" />
+        app:layout_widthPercent="70%"
+        android:layout_below="@id/text_ship_type"
+        android:layout_toEndOf="@id/text_ship_name"
+        android:layout_alignBaseline="@id/text_ship_name"
+        android:padding="5dp"/>
 
     <TextView
         android:id="@+id/text_card_type"
@@ -39,10 +55,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/text_card_type" />
+        android:text="@string/text_card_type"
+        app:layout_widthPercent="30%"
+        android:layout_below="@id/text_ship_name"
+        android:layout_marginTop="10dp"/>
 
     <Spinner
+        android:id="@+id/spinner_card_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner_card_type" />
-</GridLayout>
+        app:layout_widthPercent="70%"
+        android:layout_below="@id/text_ship_name"
+        android:layout_toEndOf="@id/text_card_type"
+        android:layout_alignBaseline="@id/text_card_type"
+        android:padding="5dp"/>
+</android.support.percent.PercentRelativeLayout>

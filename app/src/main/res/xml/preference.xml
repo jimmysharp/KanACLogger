@@ -26,5 +26,8 @@
         </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/text_pref_cat_other">
+        <Preference
+            android:key="license"
+            android:title="@string/text_license"/>
     </PreferenceCategory>
 </PreferenceScreen>

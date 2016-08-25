@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
+import jimmysharp.kanaclogger.model.NewConstruction;
 import jimmysharp.kanaclogger.model.table.Card;
 
 public class ShipConstructionsFragment extends Fragment implements AddShipConstructionListener{
