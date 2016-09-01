@@ -15,13 +15,13 @@
 - app/twitter.properties file as
 
 ```twitter.properties
-twitterConsumerKey= YOUR_CONSUMER_KEY  
+twitterConsumerKey=YOUR_CONSUMER_KEY  
 twitterConsumerSecret=YOUR_CONSUMER_SECRET  
 ```
 
 ## Author
 
-jimmysharp
+jimmysharp  
 twitter: [@sharp_tech](https://twitter.com/sharp_tech)
 
 ## LICENSE

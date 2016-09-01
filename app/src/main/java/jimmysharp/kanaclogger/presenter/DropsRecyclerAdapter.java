@@ -24,13 +24,13 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class ShipDropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipDrop>> itemsObservable;
     private Subscription itemsSubscription;
     private List<ShipDrop> items;
     private final LayoutInflater inflater;
 
-    public ShipDropsRecyclerAdapter(Context context, Observable<List<ShipDrop>> items){
+    public DropsRecyclerAdapter(Context context, Observable<List<ShipDrop>> items){
         this.inflater = LayoutInflater.from(context);
         this.items = new ArrayList<>();
         this.itemsObservable = items;

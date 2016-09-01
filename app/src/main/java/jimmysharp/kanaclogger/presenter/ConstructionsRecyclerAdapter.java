@@ -2,7 +2,6 @@ package jimmysharp.kanaclogger.presenter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +22,13 @@ import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipConstruction>> itemsObservable;
     private Subscription itemsSubscription;
     private List<ShipConstruction> items;
     private final LayoutInflater inflater;
 
-    public ShipConstructionsRecyclerAdapter(Context context, Observable<List<ShipConstruction>> items){
+    public ConstructionsRecyclerAdapter(Context context, Observable<List<ShipConstruction>> items){
         this.inflater = LayoutInflater.from(context);
         this.items = new ArrayList<>();
         this.itemsObservable = items;
@@ -37,7 +36,7 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ShipConstructionRecyclerViewHolder(
+        return new ConstructionRecyclerViewHolder(
                 inflater.inflate(R.layout.item_construction,parent,false)
         );
     }
@@ -92,13 +91,13 @@ public class ShipConstructionsRecyclerAdapter extends RecyclerView.Adapter<Recyc
         this.itemsSubscription.unsubscribe();
     }
 
-    public class ShipConstructionRecyclerViewHolder extends RecyclerView.ViewHolder{
+    public class ConstructionRecyclerViewHolder extends RecyclerView.ViewHolder{
         final TextView shipName;
         final TextView cardType;
         final TextView date;
         final TextView resources;
 
-        public ShipConstructionRecyclerViewHolder(View itemView) {
+        public ConstructionRecyclerViewHolder(View itemView) {
             super(itemView);
             shipName = (TextView) itemView.findViewById(R.id.ship_name);
             cardType = (TextView) itemView.findViewById(R.id.card_type);

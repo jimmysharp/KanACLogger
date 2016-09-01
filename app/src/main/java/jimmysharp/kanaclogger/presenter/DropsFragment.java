@@ -14,13 +14,13 @@ import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.table.Card;
 
-public class ShipDropsFragment extends Fragment implements AddShipDropListener {
+public class DropsFragment extends Fragment implements AddDropListener {
     private static String DIALOG_TAG = "addDropDialog";
 
-    private ShipDropsRecyclerAdapter adapter;
+    private DropsRecyclerAdapter adapter;
     private DatabaseManager db = null;
 
-    public ShipDropsFragment() {}
+    public DropsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,17 +31,17 @@ public class ShipDropsFragment extends Fragment implements AddShipDropListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.db = ((MainActivity)getActivity()).getDB();
-        this.adapter = new ShipDropsRecyclerAdapter(this.getActivity(),
+        this.adapter = new DropsRecyclerAdapter(this.getActivity(),
                 db.getAllShipDrops());
 
-        View view = inflater.inflate(R.layout.fragment_ship_drops, container, false);
+        View view = inflater.inflate(R.layout.fragment_drops, container, false);
 
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_drop);
         ImageButton buttonOpenDrop = (ImageButton) view.findViewById(R.id.button_open_drop);
 
         listView.setAdapter(adapter);
         buttonOpenDrop.setOnClickListener(view1 -> {
-            final AddShipDropDialog dialog = new AddShipDropDialog();
+            final AddDropDialog dialog = new AddDropDialog();
             dialog.setTargetFragment(this,101);
             dialog.show(getChildFragmentManager(),DIALOG_TAG);
         });

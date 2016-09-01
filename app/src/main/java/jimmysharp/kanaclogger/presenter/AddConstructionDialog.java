@@ -24,14 +24,14 @@ import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipType;
 
-public class AddShipConstructionDialog extends DialogFragment {
-    private String TAG = AddShipConstructionDialog.class.getSimpleName();
+public class AddConstructionDialog extends DialogFragment {
+    private String TAG = AddConstructionDialog.class.getSimpleName();
 
     private ShipTypesAdapter shipTypes = null;
     private ShipsAdapter ships = null;
     private CardTypesAdapter cardTypes = null;
     private DatabaseManager db = null;
-    private AddShipConstructionListener listener;
+    private AddConstructionListener listener;
 
     private EditText textFuel;
     private EditText textBullet;
@@ -45,7 +45,7 @@ public class AddShipConstructionDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.fragment_add_ship_construction,null);
+        View view = inflater.inflate(R.layout.dialog_add_construction,null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.tab_construction))
@@ -110,7 +110,7 @@ public class AddShipConstructionDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
-        listener = (AddShipConstructionListener) getTargetFragment();
+        listener = (AddConstructionListener) getTargetFragment();
 
         return dialog;
     }

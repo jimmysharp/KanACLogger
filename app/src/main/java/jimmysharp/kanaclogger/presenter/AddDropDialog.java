@@ -27,8 +27,8 @@ import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipType;
 import jimmysharp.kanaclogger.model.table.SubMap;
 
-public class AddShipDropDialog extends DialogFragment {
-    private String TAG = AddShipDropDialog.class.getSimpleName();
+public class AddDropDialog extends DialogFragment {
+    private String TAG = AddDropDialog.class.getSimpleName();
 
     private MapFieldsAdapter mapFields = null;
     private BattleTypesAdapter battleTypes = null;
@@ -36,7 +36,7 @@ public class AddShipDropDialog extends DialogFragment {
     private ShipsAdapter ships = null;
     private CardTypesAdapter cardTypes = null;
     private DatabaseManager db = null;
-    private AddShipDropListener listener;
+    private AddDropListener listener;
 
     private Spinner spinnerMapFields;
     private Spinner spinnerBattleTypes;
@@ -47,7 +47,7 @@ public class AddShipDropDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater inflater = LayoutInflater.from(getActivity());
-        View view = inflater.inflate(R.layout.fragment_add_ship_drop,null);
+        View view = inflater.inflate(R.layout.dialog_add_drop,null);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.tab_drop))
@@ -111,7 +111,7 @@ public class AddShipDropDialog extends DialogFragment {
         AlertDialog dialog = builder.show();
         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(view1 -> onOKClicked());
 
-        listener = (AddShipDropListener) getTargetFragment();
+        listener = (AddDropListener) getTargetFragment();
 
         return dialog;
     }

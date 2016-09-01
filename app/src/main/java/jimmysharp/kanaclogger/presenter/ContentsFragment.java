@@ -58,13 +58,13 @@ public class ContentsFragment extends Fragment {
             Fragment fragment = null;
             switch (position) {
                 case 0:
-                    fragment = new ShipBulkTransactionFragment();
+                    fragment = new BulkRegisterFragment();
                     break;
                 case 1:
-                    fragment = new ShipConstructionsFragment();
+                    fragment = new ConstructionsFragment();
                     break;
                 case 2:
-                    fragment = new ShipDropsFragment();
+                    fragment = new DropsFragment();
                     break;
                 case 3:
                     fragment = new ShipListFragment();

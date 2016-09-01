@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="3dp">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/ship_name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="7"
-        android:layout_marginEnd="2dp"/>
-    <TextView
-        android:id="@+id/card_type"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ship_name"/>
-    <TextView
-        android:id="@+id/drop_map_field"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/ship_name" />
-    <TextView
-        android:id="@+id/drop_battle_type"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/drop_map_field" />
-    <TextView
-        android:id="@+id/date"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/ship_name"
-        android:layout_below="@id/drop_map_field"
-        android:layout_alignStart="@id/drop_map_field"/>
-</RelativeLayout>
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/ship_name"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="7"
+            android:layout_marginEnd="2dp"/>
+        <TextView
+            android:id="@+id/card_type"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ship_name"/>
+        <TextView
+            android:id="@+id/drop_map_field"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ship_name" />
+        <TextView
+            android:id="@+id/drop_battle_type"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/drop_map_field" />
+        <TextView
+            android:id="@+id/date"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/ship_name"
+            android:layout_below="@id/drop_map_field"
+            android:layout_alignStart="@id/drop_map_field"/>
+    </RelativeLayout>
+</layout>

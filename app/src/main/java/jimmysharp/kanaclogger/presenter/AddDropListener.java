@@ -2,6 +2,6 @@ package jimmysharp.kanaclogger.presenter;
 
 import jimmysharp.kanaclogger.model.NewDrop;
 
-public interface AddShipDropListener {
+public interface AddDropListener {
     void onAddNewDrop(NewDrop drop);
 }

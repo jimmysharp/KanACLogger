@@ -14,13 +14,13 @@ import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.NewConstruction;
 import jimmysharp.kanaclogger.model.table.Card;
 
-public class ShipConstructionsFragment extends Fragment implements AddShipConstructionListener{
+public class ConstructionsFragment extends Fragment implements AddConstructionListener {
     private static String DIALOG_TAG = "addConstructionDialog";
 
-    private ShipConstructionsRecyclerAdapter adapter;
+    private ConstructionsRecyclerAdapter adapter;
     private DatabaseManager db = null;
 
-    public ShipConstructionsFragment() {}
+    public ConstructionsFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,16 +31,16 @@ public class ShipConstructionsFragment extends Fragment implements AddShipConstr
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.db = ((MainActivity)getActivity()).getDB();
-        this.adapter = new ShipConstructionsRecyclerAdapter(this.getActivity(),
+        this.adapter = new ConstructionsRecyclerAdapter(this.getActivity(),
                 db.getAllShipConstructions());
-        View view = inflater.inflate(R.layout.fragment_ship_constructions, container, false);
+        View view = inflater.inflate(R.layout.fragment_constructions, container, false);
 
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_construction);
         ImageButton buttonOpenConstruction = (ImageButton) view.findViewById(R.id.button_open_construction);
 
         listView.setAdapter(adapter);
         buttonOpenConstruction.setOnClickListener(view1 -> {
-            final AddShipConstructionDialog dialog = new AddShipConstructionDialog();
+            final AddConstructionDialog dialog = new AddConstructionDialog();
             dialog.setTargetFragment(this,100);
             dialog.show(getChildFragmentManager(),DIALOG_TAG);
         });

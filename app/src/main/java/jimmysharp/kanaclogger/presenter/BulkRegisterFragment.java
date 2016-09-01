@@ -26,20 +26,20 @@ import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 import twitter4j.Status;
 
-public class ShipBulkTransactionFragment extends Fragment implements AddTypeSelectListener,
-        AddShipConstructionListener, AddShipDropListener {
+public class BulkRegisterFragment extends Fragment implements AddTypeSelectListener,
+        AddConstructionListener, AddDropListener {
     private static final String TAG = "BulkTransFragment";
     private static String DIALOG_CONSTRUCTION_TAG = "addConstructionDialog";
     private static String DIALOG_DROP_TAG = "addDropDialog";
     private static String DIALOG_SELECT_TAG = "addTypeSelectDialog";
 
     private CompositeSubscription subscription;
-    private ShipBulkTransactionRecyclerAdapter adapter = null;
+    private BulkRegisterRecyclerAdapter adapter = null;
     private DatabaseManager db = null;
     private TwitterManager twitterManager = null;
     private SharedPreferences preferences = null;
 
-    public ShipBulkTransactionFragment() { }
+    public BulkRegisterFragment() { }
 
     private void deleteDialog(String tag){
         Fragment dialog = getChildFragmentManager().findFragmentByTag(tag);
@@ -62,7 +62,7 @@ public class ShipBulkTransactionFragment extends Fragment implements AddTypeSele
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_ship_bulk_transaction, container, false);
+        View view = inflater.inflate(R.layout.fragment_bulk_register, container, false);
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_bulk_transaction);
         ImageButton button = (ImageButton) view.findViewById(R.id.button_open_add_select);
 
@@ -71,7 +71,7 @@ public class ShipBulkTransactionFragment extends Fragment implements AddTypeSele
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
         db = ((MainActivity)getActivity()).getDB();
-        adapter = new ShipBulkTransactionRecyclerAdapter(getActivity());
+        adapter = new BulkRegisterRecyclerAdapter(getActivity());
         listView.setAdapter(adapter);
 
         button.setOnClickListener(view1 -> {
@@ -111,14 +111,14 @@ public class ShipBulkTransactionFragment extends Fragment implements AddTypeSele
 
     @Override
     public void onConstructionSelected() {
-        final AddShipConstructionDialog dialog = new AddShipConstructionDialog();
+        final AddConstructionDialog dialog = new AddConstructionDialog();
         dialog.setTargetFragment(this,100);
         dialog.show(getChildFragmentManager(),DIALOG_CONSTRUCTION_TAG);
     }
 
     @Override
     public void onDropSelected() {
-        final AddShipDropDialog dialog = new AddShipDropDialog();
+        final AddDropDialog dialog = new AddDropDialog();
         dialog.setTargetFragment(this,100);
         dialog.show(getChildFragmentManager(),DIALOG_DROP_TAG);
     }

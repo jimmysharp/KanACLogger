@@ -27,11 +27,11 @@ import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.SubMap;
 
-public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
+public class BulkRegisterRecyclerAdapter extends RecyclerView.Adapter {
     private final LayoutInflater inflater;
-    private List<BulkTransactionViewItem> items;
+    private List<BulkRegisterViewItem> items;
 
-    public ShipBulkTransactionRecyclerAdapter(Context context){
+    public BulkRegisterRecyclerAdapter(Context context){
         this.inflater = LayoutInflater.from(context);
         items = new LinkedList<>();
     }
@@ -55,7 +55,7 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
 
         BriteDatabase.Transaction transaction = dbRaw.newTransaction();
         try {
-            for (BulkTransactionViewItem item : items) {
+            for (BulkRegisterViewItem item : items) {
                 item.register(db, date);
             }
             transaction.markSuccessful();
@@ -72,7 +72,7 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
 
     public List<String> getItemString(){
         List<String> result = new LinkedList<>();
-        for (BulkTransactionViewItem item : items){
+        for (BulkRegisterViewItem item : items){
             result.add(item.toString());
         }
         return result;
@@ -137,13 +137,13 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public interface BulkTransactionViewItem {
+    public interface BulkRegisterViewItem {
         int getViewType();
         void register(DatabaseManager db, ZonedDateTime date);
         void setViewHolder(RecyclerView.ViewHolder holder);
     }
 
-    public class NewConstructionViewItem implements BulkTransactionViewItem {
+    public class NewConstructionViewItem implements BulkRegisterViewItem {
         private Card card;
         private Ship ship;
         private CardType cardType;
@@ -195,7 +195,7 @@ public class ShipBulkTransactionRecyclerAdapter extends RecyclerView.Adapter {
         }
     }
 
-    public class NewDropViewItem implements BulkTransactionViewItem {
+    public class NewDropViewItem implements BulkRegisterViewItem {
         private Card card;
         private Ship ship;
         private CardType cardType;
