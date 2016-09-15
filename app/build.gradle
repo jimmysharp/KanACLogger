@@ -24,8 +24,8 @@ android {
         applicationId "jimmysharp.kanaclogger"
         minSdkVersion 17
         targetSdkVersion 24
-        versionCode 3
-        versionName "0.0.3-alpha"
+        versionCode 4
+        versionName "0.0.4-alpha"
     }
     buildTypes {
         debug {
