@@ -10,19 +10,20 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.util.Log;
 import android.widget.Toast;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.TwitterManager;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
 
 public class SettingsFragment extends PreferenceFragment implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = SettingsFragment.class.getSimpleName();
     private static final String LICENSE_DIALOG_TAG = "licenseDialog";
-    private CompositeSubscription subscription;
+    private CompositeDisposable subscription;
     private TwitterManager twitter;
     private RequestToken requestToken = null;
 
@@ -32,7 +33,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        subscription = new CompositeSubscription();
+        subscription = new CompositeDisposable();
 
         addPreferencesFromResource(R.xml.preference);
         twitter = new TwitterManager(this.getActivity());
@@ -45,7 +46,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             subscription.add(twitter.getAccessTokenUrl()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<RequestToken>() {
+                    .subscribeWith(new DisposableSingleObserver<RequestToken>() {
                 @Override
                 public void onSuccess(RequestToken token) {
                     requestToken = token;
@@ -77,7 +78,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             subscription.add(twitter.getAndSaveAccessToken(getActivity(),requestToken,uri)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleSubscriber<AccessToken>() {
+                    .subscribeWith(new DisposableSingleObserver<AccessToken>() {
                 @Override
                 public void onSuccess(AccessToken token) {
                     Toast.makeText(getActivity(),getString(R.string.msg_twitter_oauth_success),Toast.LENGTH_SHORT).show();
@@ -114,8 +115,8 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         }
 
         getPreferenceScreen().getSharedPreferences().unregisterOnSharedPreferenceChangeListener(this);
-        subscription.unsubscribe();
-        subscription = new CompositeSubscription();
+        subscription.dispose();
+        subscription = new CompositeDisposable();
     }
 
     @Override

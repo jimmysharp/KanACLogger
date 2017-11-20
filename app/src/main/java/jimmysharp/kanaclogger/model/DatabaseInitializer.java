@@ -5,13 +5,17 @@ import android.content.res.AssetManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.squareup.sqlbrite.BriteDatabase;
-import com.squareup.sqlbrite.SqlBrite;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+import com.squareup.sqlbrite2.SqlBrite;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import io.reactivex.schedulers.Schedulers;
 import jimmysharp.kanaclogger.model.table.BattleTypeAccessor;
 import jimmysharp.kanaclogger.model.table.CardAccessor;
 import jimmysharp.kanaclogger.model.table.CardTypeAccessor;
@@ -26,7 +30,6 @@ import jimmysharp.kanaclogger.model.table.ShipDropAccessor;
 import jimmysharp.kanaclogger.model.table.ShipTransactionAccessor;
 import jimmysharp.kanaclogger.model.table.ShipTypeAccessor;
 import jimmysharp.kanaclogger.model.table.SubMapAccessor;
-import rx.schedulers.Schedulers;
 
 public class DatabaseInitializer {
     private static final String TAG = DatabaseInitializer.class.getSimpleName();
@@ -72,7 +75,7 @@ public class DatabaseInitializer {
     public BriteDatabase open() throws IOException{
         Log.v(TAG,"Open DB to use");
         this.migrate();
-        sqlBrite = SqlBrite.create();
+        sqlBrite = new SqlBrite.Builder().build();
         userDB = sqlBrite.wrapDatabaseHelper(new UserDBOpenHelper(context), Schedulers.io());
 
         return userDB;

@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class SubMap {
     private final long id;
@@ -24,13 +24,13 @@ public class SubMap {
         return mapField;
     }
     public MapField getMapField(){
-        return mapField.toBlocking().firstOrDefault(null);
+        return mapField.blockingFirst(null);
     }
     public Observable<BattleType> getBattleTypeObservable() {
         return battleType;
     }
     public BattleType getBattleType(){
-        return battleType.toBlocking().firstOrDefault(null);
+        return battleType.blockingFirst(null);
     }
     public int getGp() {
         return gp;

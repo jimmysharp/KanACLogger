@@ -2,9 +2,13 @@ package jimmysharp.kanaclogger.model;
 
 import android.database.SQLException;
 import android.util.Log;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import org.threeten.bp.ZonedDateTime;
 import java.util.List;
+
+import io.reactivex.Observable;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.BattleTypeAccessor;
 import jimmysharp.kanaclogger.model.table.Card;
@@ -24,7 +28,6 @@ import jimmysharp.kanaclogger.model.table.ShipType;
 import jimmysharp.kanaclogger.model.table.ShipTypeAccessor;
 import jimmysharp.kanaclogger.model.table.SubMap;
 import jimmysharp.kanaclogger.model.table.SubMapAccessor;
-import rx.Observable;
 
 public class DatabaseManager {
     private final String TAG = DatabaseManager.class.getSimpleName();

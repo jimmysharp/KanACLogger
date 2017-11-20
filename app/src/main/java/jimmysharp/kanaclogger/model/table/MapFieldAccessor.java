@@ -1,10 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class MapFieldAccessor {
     private static final String TABLE_NAME = "MapField";
@@ -45,7 +47,7 @@ public class MapFieldAccessor {
                 ));
     }
     public static List<MapField> getAllMapFields(BriteDatabase db){
-        return getAllMapFieldsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllMapFieldsObservable(db).blockingFirst(null);
     }
     public static Observable<MapField> getMapFieldObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME +
@@ -62,6 +64,6 @@ public class MapFieldAccessor {
                 ),null);
     }
     public static MapField getMapField(BriteDatabase db, long id){
-        return getMapFieldObservable(db, id).toBlocking().firstOrDefault(null);
+        return getMapFieldObservable(db, id).blockingFirst(null);
     }
 }

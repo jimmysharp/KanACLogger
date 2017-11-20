@@ -9,6 +9,11 @@ import android.widget.TextView;
 import org.threeten.bp.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
@@ -19,14 +24,10 @@ import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipDrop;
 import jimmysharp.kanaclogger.model.table.ShipTransaction;
 import jimmysharp.kanaclogger.model.table.SubMap;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class DropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipDrop>> itemsObservable;
-    private Subscription itemsSubscription;
+    private Disposable itemsSubscription;
     private List<ShipDrop> items;
     private final LayoutInflater inflater;
 
@@ -72,9 +73,9 @@ public class DropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ShipDrop>>() {
+        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<ShipDrop>>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
             }
 
             @Override
@@ -92,7 +93,7 @@ public class DropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        this.itemsSubscription.unsubscribe();
+        this.itemsSubscription.dispose();
     }
 
     public class ShipDropsRecyclerViewHolder extends RecyclerView.ViewHolder{

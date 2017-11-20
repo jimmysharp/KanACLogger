@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class MapField {
     private final long id;
@@ -30,7 +30,7 @@ public class MapField {
         return mapArea;
     }
     public MapArea getMapArea(){
-        return mapArea.toBlocking().firstOrDefault(null);
+        return mapArea.blockingFirst(null);
     }
     public int getNumber() {
         return number;

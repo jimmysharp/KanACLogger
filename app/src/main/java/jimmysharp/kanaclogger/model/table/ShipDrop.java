@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipDrop {
     private final long id;
@@ -20,12 +20,12 @@ public class ShipDrop {
         return shipTransaction;
     }
     public ShipTransaction getShipTransaction(){
-        return shipTransaction.toBlocking().firstOrDefault(null);
+        return shipTransaction.blockingFirst(null);
     }
     public Observable<SubMap> getSubMapObservable() {
         return subMap;
     }
     public SubMap getSubMap(){
-        return subMap.toBlocking().firstOrDefault(null);
+        return subMap.blockingFirst(null);
     }
 }

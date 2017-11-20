@@ -1,7 +1,8 @@
 package jimmysharp.kanaclogger.model.table;
 
 import org.threeten.bp.ZonedDateTime;
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class ShipTransaction {
     private final long id;
@@ -26,7 +27,7 @@ public class ShipTransaction {
         return card;
     }
     public Card getCard(){
-        return card.toBlocking().firstOrDefault(null);
+        return card.blockingFirst(null);
     }
     public long getQuantity() {
         return quantity;

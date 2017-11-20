@@ -3,10 +3,12 @@ package jimmysharp.kanaclogger.model.table;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipDropAccessor {
     private static final String TABLE_NAME = "ShipDrop";
@@ -36,7 +38,7 @@ public class ShipDropAccessor {
         ));
     }
     public static List<ShipDrop> getAllShipDrops(BriteDatabase db){
-        return getAllShipDropsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllShipDropsObservable(db).blockingFirst(null);
     }
     public static Observable<ShipDrop> getShipDropObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -48,7 +50,7 @@ public class ShipDropAccessor {
                 ),null);
     }
     public static ShipDrop getShipDrop(BriteDatabase db, long id){
-        return getShipDropObservable(db,id).toBlocking().firstOrDefault(null);
+        return getShipDropObservable(db,id).blockingFirst(null);
     }
 
     public static long insert(BriteDatabase db, long shipTransactionId, long subMapId){

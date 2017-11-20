@@ -2,7 +2,6 @@ package jimmysharp.kanaclogger.model;
 
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
-import rx.Observable;
 
 public class ShipTransactionSum {
     private final long id;

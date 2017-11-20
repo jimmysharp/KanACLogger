@@ -8,18 +8,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.ShipTransactionSum;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class ShipListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipTransactionSum>> itemsObservable;
-    private Subscription itemsSubscription;
+    private Disposable itemsSubscription;
     private List<ShipTransactionSum> items;
     private final LayoutInflater inflater;
 
@@ -56,9 +57,9 @@ public class ShipListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ShipTransactionSum>>() {
+        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<ShipTransactionSum>>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
             }
 
             @Override
@@ -76,7 +77,7 @@ public class ShipListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        this.itemsSubscription.unsubscribe();
+        this.itemsSubscription.dispose();
     }
 
     public class ShipListRecyclerViewHolder extends RecyclerView.ViewHolder{

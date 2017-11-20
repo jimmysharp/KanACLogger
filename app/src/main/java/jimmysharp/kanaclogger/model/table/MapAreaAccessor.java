@@ -1,10 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class MapAreaAccessor {
     private static final String TABLE_NAME = "MapArea";
@@ -30,7 +32,7 @@ public class MapAreaAccessor {
                 .mapToList(cursor -> new MapArea(cursor.getLong(0),cursor.getString(1)));
     }
     public static List<MapArea> getAllMapAreas(BriteDatabase db){
-        return getAllMapAreasObservable(db).toBlocking().firstOrDefault(null);
+        return getAllMapAreasObservable(db).blockingFirst(null);
     }
     public static Observable<MapArea> getMapAreaObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -38,6 +40,6 @@ public class MapAreaAccessor {
                 .mapToOneOrDefault(cursor -> new MapArea(cursor.getLong(0),cursor.getString(1)), null);
     }
     public static MapArea getMapArea(BriteDatabase db, long id){
-        return getMapAreaObservable(db,id).toBlocking().firstOrDefault(null);
+        return getMapAreaObservable(db,id).blockingFirst(null);
     }
 }

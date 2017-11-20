@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ManualShipExchange {
     private final long id;
@@ -20,12 +20,12 @@ public class ManualShipExchange {
         return shipTransaction;
     }
     public ShipTransaction getShipTransaction(){
-        return shipTransaction.toBlocking().firstOrDefault(null);
+        return shipTransaction.blockingFirst(null);
     }
     public Observable<ManualShipExchangeType> getExchangeTypeObservable() {
         return exchangeType;
     }
     public ManualShipExchangeType getExchangeType(){
-        return exchangeType.toBlocking().firstOrDefault(null);
+        return exchangeType.blockingFirst(null);
     }
 }

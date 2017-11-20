@@ -1,10 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipTypeAccessor {
     private static final String TABLE_NAME = "ShipType";
@@ -30,7 +32,7 @@ public class ShipTypeAccessor {
                 .mapToList(cursor -> new ShipType(cursor.getLong(0),cursor.getString(1)));
     }
     public static List<ShipType> getAllShipTypes(BriteDatabase db){
-        return getAllShipTypesObservable(db).toBlocking().firstOrDefault(null);
+        return getAllShipTypesObservable(db).blockingFirst(null);
     }
     public static Observable<ShipType> getShipTypeObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -38,6 +40,6 @@ public class ShipTypeAccessor {
                 .mapToOneOrDefault(cursor -> new ShipType(cursor.getLong(0),cursor.getString(1)), null);
     }
     public static ShipType getShipType(BriteDatabase db, long id){
-        return getShipTypeObservable(db, id).toBlocking().firstOrDefault(null);
+        return getShipTypeObservable(db, id).blockingFirst(null);
     }
 }

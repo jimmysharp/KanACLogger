@@ -74,22 +74,22 @@ public class AddConstructionDialog extends DialogFragment {
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        db.getAllShipTypes().take(1).toBlocking().subscribe(
+        db.getAllShipTypes().take(1).blockingSubscribe(
                 shipTypes -> {this.shipTypes.clear(); this.shipTypes.addAll(shipTypes);});
         if (shipTypes != null && shipTypes.getCount() > 1) {
-            db.getShips(shipTypes.getItem(0),null).take(1).toBlocking().subscribe(
+            db.getShips(shipTypes.getItem(0),null).take(1).blockingSubscribe(
                     ships -> {
                         this.ships.clear();
                         this.ships.addAll(ships);
                     });
         } else {
-            db.getAllShipsSorted().take(1).toBlocking().subscribe(
+            db.getAllShipsSorted().take(1).blockingSubscribe(
                     ships -> {
                         this.ships.clear();
                         this.ships.addAll(ships);
                     });
         }
-        db.getAllCardTypes().take(1).toBlocking().subscribe(
+        db.getAllCardTypes().take(1).blockingSubscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
         spinnerShipTypes = (Spinner) view.findViewById(R.id.spinner_ship_type);
@@ -117,7 +117,7 @@ public class AddConstructionDialog extends DialogFragment {
 
     public void updateShips(){
         ShipType shipType = (ShipType) spinnerShipTypes.getSelectedItem();
-        db.getShips(shipType,null).take(1).toBlocking().subscribe(
+        db.getShips(shipType,null).take(1).blockingSubscribe(
                 ships -> {
                     this.ships.clear();
                     this.ships.addAll(ships);
@@ -153,7 +153,7 @@ public class AddConstructionDialog extends DialogFragment {
 
         try {
             card = db.getCard(shipId,cardTypeId);
-            if (card == null) new RuntimeException("No such card: shipId="+shipId+",cardTypeId="+cardTypeId);
+            if (card == null) throw new RuntimeException("No such card: shipId="+shipId+",cardTypeId="+cardTypeId);
         } catch (RuntimeException e){
             Log.e(TAG,"Failed to add construction: Database Error: "+e.getMessage());
             Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_construction_failed),Toast.LENGTH_LONG).show();

@@ -14,16 +14,17 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import io.reactivex.Single;
+import io.reactivex.SingleObserver;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.observers.DisposableSingleObserver;
+import io.reactivex.schedulers.Schedulers;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.DatabaseManager;
 import jimmysharp.kanaclogger.model.NewConstruction;
 import jimmysharp.kanaclogger.model.NewDrop;
 import jimmysharp.kanaclogger.model.TwitterManager;
-import rx.Single;
-import rx.SingleSubscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-import rx.subscriptions.CompositeSubscription;
 import twitter4j.Status;
 
 public class BulkRegisterFragment extends Fragment implements AddTypeSelectListener,
@@ -33,7 +34,7 @@ public class BulkRegisterFragment extends Fragment implements AddTypeSelectListe
     private static String DIALOG_DROP_TAG = "addDropDialog";
     private static String DIALOG_SELECT_TAG = "addTypeSelectDialog";
 
-    private CompositeSubscription subscription;
+    private CompositeDisposable subscription;
     private BulkRegisterRecyclerAdapter adapter = null;
     private DatabaseManager db = null;
     private TwitterManager twitterManager = null;
@@ -54,8 +55,8 @@ public class BulkRegisterFragment extends Fragment implements AddTypeSelectListe
         deleteDialog(DIALOG_DROP_TAG);
         deleteDialog(DIALOG_SELECT_TAG);
 
-        subscription.unsubscribe();
-        subscription = new CompositeSubscription();
+        subscription.dispose();
+        subscription = new CompositeDisposable();
         super.onPause();
     }
 
@@ -66,7 +67,7 @@ public class BulkRegisterFragment extends Fragment implements AddTypeSelectListe
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_bulk_transaction);
         ImageButton button = (ImageButton) view.findViewById(R.id.button_open_add_select);
 
-        subscription = new CompositeSubscription();
+        subscription = new CompositeDisposable();
         twitterManager = new TwitterManager(getActivity());
         preferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -147,7 +148,7 @@ public class BulkRegisterFragment extends Fragment implements AddTypeSelectListe
                     subscription.add(tweet
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new SingleSubscriber<Status>() {
+                            .subscribeWith(new DisposableSingleObserver<Status>() {
                         @Override
                         public void onSuccess(Status value) {
                             Toast.makeText(getActivity(),getString(R.string.msg_twitter_tweet_success)+"\n"+value.getText()

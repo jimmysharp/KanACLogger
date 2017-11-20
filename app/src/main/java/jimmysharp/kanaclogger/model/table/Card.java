@@ -1,6 +1,7 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class Card {
     private final long id;
@@ -20,12 +21,12 @@ public class Card {
         return ship;
     }
     public Ship getShip(){
-        return ship.toBlocking().firstOrDefault(null);
+        return ship.blockingFirst(null);
     }
     public Observable<CardType> getCardTypeObservable() {
         return cardType;
     }
     public CardType getCardType(){
-        return cardType.toBlocking().firstOrDefault(null);
+        return cardType.blockingFirst(null);
     }
 }

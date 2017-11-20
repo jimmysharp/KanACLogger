@@ -11,20 +11,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipConstruction;
 import jimmysharp.kanaclogger.model.table.ShipTransaction;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
 
 public class ConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private Observable<List<ShipConstruction>> itemsObservable;
-    private Subscription itemsSubscription;
+    private Disposable itemsSubscription;
     private List<ShipConstruction> items;
     private final LayoutInflater inflater;
 
@@ -68,9 +68,9 @@ public class ConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<List<ShipConstruction>>() {
+        itemsSubscription = itemsObservable.observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableObserver<List<ShipConstruction>>() {
             @Override
-            public void onCompleted() {
+            public void onComplete() {
             }
 
             @Override
@@ -88,7 +88,7 @@ public class ConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
     @Override
     public void onDetachedFromRecyclerView(RecyclerView recyclerView) {
         super.onDetachedFromRecyclerView(recyclerView);
-        this.itemsSubscription.unsubscribe();
+        this.itemsSubscription.dispose();
     }
 
     public class ConstructionRecyclerViewHolder extends RecyclerView.ViewHolder{

@@ -1,10 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipAccessor {
     private static final String TABLE_NAME = "Ship";
@@ -43,7 +45,7 @@ public class ShipAccessor {
                 ));
     }
     public static List<Ship> getAllShips(BriteDatabase db){
-        return getAllShipsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllShipsObservable(db).blockingFirst(null);
     }
 
     public static Observable<List<Ship>> getAllShipsSortedObservable(BriteDatabase db){
@@ -59,7 +61,7 @@ public class ShipAccessor {
                 ));
     }
     public static List<Ship> getAllShipsSorted(BriteDatabase db){
-        return getAllShipsSortedObservable(db).toBlocking().firstOrDefault(null);
+        return getAllShipsSortedObservable(db).blockingFirst(null);
     }
 
     public static Observable<List<Ship>> getShipsObservable(BriteDatabase db, ShipType shipType, Boolean remodelled){
@@ -83,7 +85,7 @@ public class ShipAccessor {
                 ));
     }
     public static List<Ship> getShips(BriteDatabase db, ShipType shipType, Boolean remodelled){
-        return getShipsObservable(db, shipType, remodelled).toBlocking().firstOrDefault(null);
+        return getShipsObservable(db, shipType, remodelled).blockingFirst(null);
     }
 
     public static Observable<Ship> getShipObservable(BriteDatabase db, long id){
@@ -100,6 +102,6 @@ public class ShipAccessor {
                 ),null);
     }
     public static Ship getShip(BriteDatabase db, long id){
-        return getShipObservable(db,id).toBlocking().firstOrDefault(null);
+        return getShipObservable(db,id).blockingFirst(null);
     }
 }

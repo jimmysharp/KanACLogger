@@ -1,9 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class SubMapAccessor {
     private static final String TABLE_NAME = "SubMap";
@@ -38,7 +41,7 @@ public class SubMapAccessor {
                 ));
     }
     public static List<SubMap> getAllSubMaps(BriteDatabase db){
-        return getAllSubMapsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllSubMapsObservable(db).blockingFirst(null);
     }
     public static Observable<SubMap> getSubMapObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -52,7 +55,7 @@ public class SubMapAccessor {
                 ));
     }
     public static SubMap getSubMap(BriteDatabase db, long id){
-        return getSubMapObservable(db, id).toBlocking().firstOrDefault(null);
+        return getSubMapObservable(db, id).blockingFirst(null);
     }
 
     public static Observable<SubMap> getSubMapObservable(BriteDatabase db, long mapFieldId, long battleTypeId){
@@ -68,6 +71,6 @@ public class SubMapAccessor {
                 ),null);
     }
     public static SubMap getSubMap(BriteDatabase db, long mapFieldId, long battleTypeId){
-        return getSubMapObservable(db, mapFieldId, battleTypeId).toBlocking().firstOrDefault(null);
+        return getSubMapObservable(db, mapFieldId, battleTypeId).blockingFirst(null);
     }
 }

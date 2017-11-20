@@ -1,9 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class CardAccessor {
     private static final String TABLE_NAME = "Card";
@@ -33,7 +36,7 @@ public class CardAccessor {
                 ));
     }
     public static List<Card> getAllCards(BriteDatabase db){
-        return getAllCardsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllCardsObservable(db).blockingFirst(null);
     }
     public static Observable<Card> getCardObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM " + TABLE_NAME
@@ -46,7 +49,7 @@ public class CardAccessor {
     }
 
     public static Card getCard(BriteDatabase db, long id){
-        return getCardObservable(db,id).toBlocking().firstOrDefault(null);
+        return getCardObservable(db,id).blockingFirst(null);
     }
 
     public static Observable<Card> getCardObservable(BriteDatabase db, long shipId, long cardTypeId){
@@ -60,6 +63,6 @@ public class CardAccessor {
     }
 
     public static Card getCard(BriteDatabase db, long shipId, long cardTypeId){
-        return getCardObservable(db,shipId,cardTypeId).toBlocking().firstOrDefault(null);
+        return getCardObservable(db,shipId,cardTypeId).blockingFirst(null);
     }
 }

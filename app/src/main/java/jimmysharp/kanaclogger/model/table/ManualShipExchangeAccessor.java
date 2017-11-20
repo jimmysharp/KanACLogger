@@ -1,9 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class ManualShipExchangeAccessor {
     private static final String TABLE_NAME = "ManualShipExchange";
@@ -34,7 +37,7 @@ public class ManualShipExchangeAccessor {
                         ));
     }
     public static List<ManualShipExchange> getAllManualShipExchanges(BriteDatabase db){
-        return getAllManualShipExchangesObservable(db).toBlocking().firstOrDefault(null);
+        return getAllManualShipExchangesObservable(db).blockingFirst(null);
     }
     public static Observable<ManualShipExchange> getManualShipExchangeObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -47,6 +50,6 @@ public class ManualShipExchangeAccessor {
                         ),null);
     }
     public static ManualShipExchange getManualShipExchange(BriteDatabase db, long id){
-        return getManualShipExchangeObservable(db, id).toBlocking().firstOrDefault(null);
+        return getManualShipExchangeObservable(db, id).blockingFirst(null);
     }
 }

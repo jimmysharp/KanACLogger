@@ -3,13 +3,15 @@ package jimmysharp.kanaclogger.model.table;
 import android.content.ContentValues;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import org.threeten.bp.Instant;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipTransactionAccessor {
     private static final String TABLE_NAME = "ShipTransaction";
@@ -41,7 +43,7 @@ public class ShipTransactionAccessor {
                 ));
     }
     public static List<ShipTransaction> getAllShipTransaction(BriteDatabase db){
-        return getAllShipTransactionsObservable(db).toBlocking().firstOrDefault(null);
+        return getAllShipTransactionsObservable(db).blockingFirst(null);
     }
     public static Observable<ShipTransaction> getShipTransactionObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -54,7 +56,7 @@ public class ShipTransactionAccessor {
                 ),null);
     }
     public static ShipTransaction getShipTransaction(BriteDatabase db, long id){
-        return getShipTransactionObservable(db, id).toBlocking().firstOrDefault(null);
+        return getShipTransactionObservable(db, id).blockingFirst(null);
     }
 
     public static long insert(BriteDatabase db, ZonedDateTime date, long cardId, long quantity){

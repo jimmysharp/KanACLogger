@@ -67,26 +67,26 @@ public class AddDropDialog extends DialogFragment {
         cardTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         db = ((MainActivity)getActivity()).getDB();
-        db.getAllMapFields().take(1).toBlocking().subscribe(
+        db.getAllMapFields().take(1).blockingSubscribe(
                 mapFields -> {this.mapFields.clear(); this.mapFields.addAll(mapFields);});
-        db.getAllBattleTypes().take(1).toBlocking().subscribe(
+        db.getAllBattleTypes().take(1).blockingSubscribe(
                 battleTypes -> {this.battleTypes.clear(); this.battleTypes.addAll(battleTypes);});
-        db.getAllShipTypes().take(1).toBlocking().subscribe(
+        db.getAllShipTypes().take(1).blockingSubscribe(
                 shipTypes -> {this.shipTypes.clear(); this.shipTypes.addAll(shipTypes);});
         if (shipTypes != null && shipTypes.getCount() > 1) {
-            db.getShips(shipTypes.getItem(0),null).take(1).toBlocking().subscribe(
+            db.getShips(shipTypes.getItem(0),null).take(1).blockingSubscribe(
                     ships -> {
                         this.ships.clear();
                         this.ships.addAll(ships);
                     });
         } else {
-            db.getAllShipsSorted().take(1).toBlocking().subscribe(
+            db.getAllShipsSorted().take(1).blockingSubscribe(
                     ships -> {
                         this.ships.clear();
                         this.ships.addAll(ships);
                     });
         }
-        db.getAllCardTypes().take(1).toBlocking().subscribe(
+        db.getAllCardTypes().take(1).blockingSubscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
         spinnerMapFields = (Spinner) view.findViewById(R.id.spinner_map_field);
@@ -118,7 +118,7 @@ public class AddDropDialog extends DialogFragment {
 
     public void updateShips(){
         ShipType shipType = (ShipType) spinnerShipTypes.getSelectedItem();
-        db.getShips(shipType,null).take(1).toBlocking().subscribe(
+        db.getShips(shipType,null).take(1).blockingSubscribe(
                 ships -> {
                     this.ships.clear();
                     this.ships.addAll(ships);
@@ -133,7 +133,7 @@ public class AddDropDialog extends DialogFragment {
         long cardTypeId = ((CardType)spinnerCardTypes.getSelectedItem()).getId();
         Card card;
 
-        SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).toBlocking().firstOrDefault(null);
+        SubMap subMap = db.getSubMap(mapFieldId,battleTypeId).take(1).blockingFirst(null);
         if (subMap == null) {
             Log.e(TAG,"Failed to add drop: : No such submap ("+mapFieldId+","+battleTypeId+")");
             Toast.makeText(this.getActivity(),"Error: "+getString(R.string.msg_add_drop_failed),Toast.LENGTH_LONG).show();

@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class Ship {
     private final long id;
@@ -34,7 +34,7 @@ public class Ship {
         return shipType;
     }
     public ShipType getShipType(){
-        return shipType.toBlocking().firstOrDefault(null);
+        return shipType.blockingFirst(null);
     }
     public int getRemodelled() {
         return remodelled;

@@ -9,7 +9,8 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import java.util.LinkedList;
 import java.util.List;
-import rx.Single;
+
+import io.reactivex.Single;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

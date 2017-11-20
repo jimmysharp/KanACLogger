@@ -1,6 +1,6 @@
 package jimmysharp.kanaclogger.model.table;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 public class ShipConstruction {
     private final long id;
@@ -26,7 +26,7 @@ public class ShipConstruction {
         return shipTransaction;
     }
     public ShipTransaction getShipTransaction(){
-        return shipTransaction.toBlocking().firstOrDefault(null);
+        return shipTransaction.blockingFirst(null);
     }
     public int getFuel() {
         return fuel;

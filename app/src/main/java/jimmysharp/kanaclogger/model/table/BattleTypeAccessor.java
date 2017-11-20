@@ -1,9 +1,12 @@
 package jimmysharp.kanaclogger.model.table;
 
 import android.database.sqlite.SQLiteDatabase;
-import com.squareup.sqlbrite.BriteDatabase;
+
+import com.squareup.sqlbrite2.BriteDatabase;
+
 import java.util.List;
-import rx.Observable;
+
+import io.reactivex.Observable;
 
 public class BattleTypeAccessor {
     private static final String TABLE_NAME = "BattleType";
@@ -28,7 +31,7 @@ public class BattleTypeAccessor {
                 .mapToList(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)));
     }
     public static List<BattleType> getAllBattleTypes(BriteDatabase db){
-        return getAllBattleTypesObservable(db).toBlocking().firstOrDefault(null);
+        return getAllBattleTypesObservable(db).blockingFirst(null);
     }
     public static Observable<BattleType> getBattleTypeObservable(BriteDatabase db, long id){
         return db.createQuery(TABLE_NAME, "SELECT * FROM "+ TABLE_NAME
@@ -36,6 +39,6 @@ public class BattleTypeAccessor {
                 .mapToOneOrDefault(cursor -> new BattleType(cursor.getLong(0),cursor.getString(1)),null);
     }
     public static BattleType getBattleType(BriteDatabase db, long id){
-        return getBattleTypeObservable(db,id).toBlocking().firstOrDefault(null);
+        return getBattleTypeObservable(db,id).blockingFirst(null);
     }
 }
