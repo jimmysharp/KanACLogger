@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 
 Properties props = new Properties()
 try {
@@ -18,7 +17,7 @@ if (props.getProperty("twitterConsumerSecret") == null) {
 
 android {
     compileSdkVersion 24
-    buildToolsVersion "24.0.1"
+    buildToolsVersion '26.0.2'
 
     defaultConfig {
         applicationId "jimmysharp.kanaclogger"
