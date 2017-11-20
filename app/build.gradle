@@ -16,7 +16,7 @@ if (props.getProperty("twitterConsumerSecret") == null) {
 }
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
 
     defaultConfig {
@@ -50,22 +50,16 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
-    compile 'com.android.support:support-v13:24.2.1'
-    compile 'com.android.support:support-v4:24.2.1'
-    compile 'com.android.support:percent:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:appcompat-v7:26.1.0'
+    compile 'com.android.support:design:26.1.0'
+    compile 'com.android.support:support-v13:26.1.0'
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support:percent:26.1.0'
+    compile 'com.android.support:recyclerview-v7:26.1.0'
     compile 'io.reactivex:rxjava:1.2.0'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-support-v4:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-appcompat-v7:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-design:0.4.0'
-    compile 'com.jakewharton.rxbinding:rxbinding-recyclerview-v7:0.4.0'
-    compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.0'
     compile 'com.squareup.sqlbrite:sqlbrite:0.7.0'
     compile 'com.jakewharton.threetenabp:threetenabp:1.0.3'
     compile 'org.twitter4j:twitter4j-core:4.0.4'
-    compile 'com.annimon:stream:1.1.1'
+    compile 'com.annimon:stream:1.1.7'
 }
