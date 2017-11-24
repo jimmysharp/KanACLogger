@@ -86,8 +86,8 @@ public class ShipListRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.V
 
         public ShipListRecyclerViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.ship_name);
-            shipCount = (TextView) itemView.findViewById(R.id.ship_count);
+            shipName = itemView.findViewById(R.id.ship_name);
+            shipCount = itemView.findViewById(R.id.ship_count);
         }
     }
 }

@@ -145,7 +145,7 @@ public class TwitterManager {
         for (String line : lines){
             if (charCount + line.length() > maxChars){
                 if (buffer.size() == 0){
-                    tweetList.add(Single.create(subscriber -> { subscriber.onError(new RuntimeException("Tweet too long: "+line.length()+" chars")); }));
+                    tweetList.add(Single.create(subscriber -> subscriber.onError(new RuntimeException("Tweet too long: "+line.length()+" chars"))));
                     continue;
                 } else {
                     buffer.add(hashtag);

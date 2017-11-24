@@ -18,7 +18,6 @@ import jimmysharp.kanaclogger.R;
 import jimmysharp.kanaclogger.model.table.BattleType;
 import jimmysharp.kanaclogger.model.table.Card;
 import jimmysharp.kanaclogger.model.table.CardType;
-import jimmysharp.kanaclogger.model.table.MapArea;
 import jimmysharp.kanaclogger.model.table.MapField;
 import jimmysharp.kanaclogger.model.table.Ship;
 import jimmysharp.kanaclogger.model.table.ShipDrop;
@@ -105,11 +104,11 @@ public class DropsRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.View
 
         public ShipDropsRecyclerViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.ship_name);
-            cardType = (TextView) itemView.findViewById(R.id.card_type);
-            mapField = (TextView) itemView.findViewById(R.id.drop_map_field);
-            battleType = (TextView) itemView.findViewById(R.id.drop_battle_type);
-            date = (TextView) itemView.findViewById(R.id.date);
+            shipName = itemView.findViewById(R.id.ship_name);
+            cardType = itemView.findViewById(R.id.card_type);
+            mapField = itemView.findViewById(R.id.drop_map_field);
+            battleType = itemView.findViewById(R.id.drop_battle_type);
+            date = itemView.findViewById(R.id.date);
         }
     }
 }

@@ -4,15 +4,15 @@ Properties props = new Properties()
 try {
     props.load(file('twitter.properties').newDataInputStream())
 } catch (IOException e) {
-    throw new GradleException("Missing twitter.properties.");
+    throw new GradleException("Missing twitter.properties.")
 } catch (IllegalArgumentException e) {
-    throw new GradleException("twitter.properties contains illegal argument.");
+    throw new GradleException("twitter.properties contains illegal argument.")
 }
 if (props.getProperty("twitterConsumerKey") == null) {
-    throw new GradleException("Missing \"twitterConsumerKey\" property in twitter.properties");
+    throw new GradleException("Missing \"twitterConsumerKey\" property in twitter.properties")
 }
 if (props.getProperty("twitterConsumerSecret") == null) {
-    throw new GradleException("Missing \"twitterConsumerSecret\" property in twitter.properties");
+    throw new GradleException("Missing \"twitterConsumerSecret\" property in twitter.properties")
 }
 
 android {

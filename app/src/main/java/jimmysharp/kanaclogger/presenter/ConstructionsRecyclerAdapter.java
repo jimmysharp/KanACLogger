@@ -99,10 +99,10 @@ public class ConstructionsRecyclerAdapter extends RecyclerView.Adapter<RecyclerV
 
         public ConstructionRecyclerViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.ship_name);
-            cardType = (TextView) itemView.findViewById(R.id.card_type);
-            date = (TextView) itemView.findViewById(R.id.date);
-            resources = (TextView) itemView.findViewById(R.id.resources);
+            shipName = itemView.findViewById(R.id.ship_name);
+            cardType = itemView.findViewById(R.id.card_type);
+            date = itemView.findViewById(R.id.date);
+            resources = itemView.findViewById(R.id.resources);
         }
     }
 }

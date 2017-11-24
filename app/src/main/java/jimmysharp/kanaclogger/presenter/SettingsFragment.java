@@ -41,7 +41,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         onSharedPreferenceChanged(null,"hashtag_text");
         onSharedPreferenceChanged(null,"twitter_authentication");
 
-        Preference twitterAuthPref = (Preference) findPreference("twitter_authentication");
+        Preference twitterAuthPref = findPreference("twitter_authentication");
         twitterAuthPref.setOnPreferenceClickListener(preference1 -> {
             subscription.add(twitter.getAccessTokenUrl()
                     .subscribeOn(Schedulers.io())
@@ -63,7 +63,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             return true;
         });
 
-        Preference licensePref = (Preference) findPreference("license");
+        Preference licensePref = findPreference("license");
         licensePref.setOnPreferenceClickListener(preference -> {
             final LicenseDialog licenseDialog = new LicenseDialog();
             licenseDialog.setTargetFragment(this,100);
@@ -137,7 +137,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                 editTextPreference.setSummary(editTextPreference.getText());
                 break;
             case "twitter_authentication":
-                Preference preference = (Preference) findPreference("twitter_authentication");
+                Preference preference = findPreference("twitter_authentication");
                 if (twitter.isAccessTokenStored()){
                     preference.setSummary(getString(R.string.text_pref_twitter_account_registered));
                 } else {

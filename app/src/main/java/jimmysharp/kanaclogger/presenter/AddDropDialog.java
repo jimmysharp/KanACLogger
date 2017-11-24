@@ -89,13 +89,13 @@ public class AddDropDialog extends DialogFragment {
         db.getAllCardTypes().take(1).blockingSubscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
-        spinnerMapFields = (Spinner) view.findViewById(R.id.spinner_map_field);
+        spinnerMapFields = view.findViewById(R.id.spinner_map_field);
         spinnerMapFields.setAdapter(mapFields);
-        spinnerBattleTypes = (Spinner) view.findViewById(R.id.spinner_battle_type);
+        spinnerBattleTypes = view.findViewById(R.id.spinner_battle_type);
         spinnerBattleTypes.setAdapter(battleTypes);
-        spinnerShipTypes = (Spinner) view.findViewById(R.id.spinner_ship_type);
+        spinnerShipTypes = view.findViewById(R.id.spinner_ship_type);
         spinnerShipTypes.setAdapter(shipTypes);
-        spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
+        spinnerShips = view.findViewById(R.id.spinner_ship_name);
         spinnerShips.setAdapter(ships);
         spinnerShipTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -105,7 +105,7 @@ public class AddDropDialog extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-        spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
+        spinnerCardTypes = view.findViewById(R.id.spinner_card_type);
         spinnerCardTypes.setAdapter(cardTypes);
 
         AlertDialog dialog = builder.show();

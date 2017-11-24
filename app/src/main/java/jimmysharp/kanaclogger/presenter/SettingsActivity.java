@@ -39,8 +39,7 @@ public class SettingsActivity extends PreferenceActivity {
                 || !intent.getData().toString().startsWith("kanactwit://oauth")) {
             return;
         }
-        Uri uri = intent.getData();
-        this.authUri = uri;
+        this.authUri = intent.getData();
         Log.v(TAG,"New auth Uri get");
     }
 

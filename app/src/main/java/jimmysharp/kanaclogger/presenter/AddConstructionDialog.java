@@ -53,18 +53,15 @@ public class AddConstructionDialog extends DialogFragment {
                 .setPositiveButton(getString(R.string.text_ok),null)
                 .setNegativeButton(getString(R.string.text_cancel),((dialogInterface, i) -> onCancelClicked()));
 
-        textFuel = (EditText)view.findViewById(R.id.editText_fuel);
+        textFuel = view.findViewById(R.id.editText_fuel);
         setResourceCheck(textFuel,
-                (TextInputLayout) view.findViewById(R.id.til_fuel));
-        textBullet = (EditText)view.findViewById(R.id.editText_bullet);
-        setResourceCheck(textBullet,
-                (TextInputLayout) view.findViewById(R.id.til_bullet));
-        textSteel = (EditText)view.findViewById(R.id.editText_steel);
-        setResourceCheck(textSteel,
-                (TextInputLayout) view.findViewById(R.id.til_steel));
-        textBauxite = (EditText)view.findViewById(R.id.editText_bauxite);
-        setResourceCheck(textBauxite,
-                (TextInputLayout) view.findViewById(R.id.til_bauxite));
+                view.findViewById(R.id.til_fuel));
+        textBullet = view.findViewById(R.id.editText_bullet);
+        setResourceCheck(textBullet, view.findViewById(R.id.til_bullet));
+        textSteel = view.findViewById(R.id.editText_steel);
+        setResourceCheck(textSteel, view.findViewById(R.id.til_steel));
+        textBauxite = view.findViewById(R.id.editText_bauxite);
+        setResourceCheck(textBauxite, view.findViewById(R.id.til_bauxite));
 
         shipTypes = new ShipTypesAdapter(this.getActivity(), R.layout.item_spinner);
         shipTypes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -92,9 +89,9 @@ public class AddConstructionDialog extends DialogFragment {
         db.getAllCardTypes().take(1).blockingSubscribe(
                 cardTypes -> {this.cardTypes.clear(); this.cardTypes.addAll(cardTypes);});
 
-        spinnerShipTypes = (Spinner) view.findViewById(R.id.spinner_ship_type);
+        spinnerShipTypes = view.findViewById(R.id.spinner_ship_type);
         spinnerShipTypes.setAdapter(shipTypes);
-        spinnerShips = (Spinner) view.findViewById(R.id.spinner_ship_name);
+        spinnerShips = view.findViewById(R.id.spinner_ship_name);
         spinnerShips.setAdapter(ships);
         spinnerShipTypes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -104,7 +101,7 @@ public class AddConstructionDialog extends DialogFragment {
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {}
         });
-        spinnerCardTypes = (Spinner) view.findViewById(R.id.spinner_card_type);
+        spinnerCardTypes = view.findViewById(R.id.spinner_card_type);
         spinnerCardTypes.setAdapter(cardTypes);
 
         AlertDialog dialog = builder.show();
@@ -175,8 +172,7 @@ public class AddConstructionDialog extends DialogFragment {
     }
 
     private boolean checkResource(int quantity){
-        if (quantity >= 30 && quantity <= 999) return true;
-        else return false;
+        return quantity >= 30 && quantity <= 999;
     }
 
     private void setResourceCheck(final EditText text, final TextInputLayout til){

@@ -116,9 +116,9 @@ public class BulkRegisterRecyclerAdapter extends RecyclerView.Adapter {
 
         public NewConstructionViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.bulk_ship_name);
-            cardType = (TextView) itemView.findViewById(R.id.bulk_card_type);
-            resources = (TextView) itemView.findViewById(R.id.bulk_resources);
+            shipName = itemView.findViewById(R.id.bulk_ship_name);
+            cardType = itemView.findViewById(R.id.bulk_card_type);
+            resources = itemView.findViewById(R.id.bulk_resources);
         }
     }
 
@@ -130,10 +130,10 @@ public class BulkRegisterRecyclerAdapter extends RecyclerView.Adapter {
 
         public NewDropViewHolder(View itemView) {
             super(itemView);
-            shipName = (TextView) itemView.findViewById(R.id.bulk_ship_name);
-            cardType = (TextView) itemView.findViewById(R.id.bulk_card_type);
-            mapField = (TextView) itemView.findViewById(R.id.bulk_drop_map_field);
-            battleType = (TextView) itemView.findViewById(R.id.bulk_drop_battle_type);
+            shipName = itemView.findViewById(R.id.bulk_ship_name);
+            cardType = itemView.findViewById(R.id.bulk_card_type);
+            mapField = itemView.findViewById(R.id.bulk_drop_map_field);
+            battleType = itemView.findViewById(R.id.bulk_drop_battle_type);
         }
     }
 

@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
             this.finish();
         }
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        Toolbar toolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         FragmentManager manager = getFragmentManager();

@@ -24,7 +24,7 @@ public class ShipListFragment extends Fragment {
                 db.getSumObservable());
         View view = inflater.inflate(R.layout.fragment_ship_list, container, false);
 
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_ship_list);
+        RecyclerView listView = view.findViewById(R.id.recyclerView_ship_list);
         listView.setAdapter(adapter);
 
         return view;

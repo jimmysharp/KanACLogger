@@ -34,10 +34,10 @@ public class ContentsFragment extends Fragment {
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
-        mViewPager = (ViewPager) view.findViewById(R.id.container_contents);
+        mViewPager = view.findViewById(R.id.container_contents);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs_contents);
+        TabLayout tabLayout = view.findViewById(R.id.tabs_contents);
         tabLayout.setupWithViewPager(mViewPager);
 
         return view;

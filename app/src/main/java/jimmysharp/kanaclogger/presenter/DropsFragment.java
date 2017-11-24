@@ -36,8 +36,8 @@ public class DropsFragment extends Fragment implements AddDropListener {
 
         View view = inflater.inflate(R.layout.fragment_drops, container, false);
 
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_drop);
-        ImageButton buttonOpenDrop = (ImageButton) view.findViewById(R.id.button_open_drop);
+        RecyclerView listView = view.findViewById(R.id.recyclerView_drop);
+        ImageButton buttonOpenDrop = view.findViewById(R.id.button_open_drop);
 
         listView.setAdapter(adapter);
         buttonOpenDrop.setOnClickListener(view1 -> {

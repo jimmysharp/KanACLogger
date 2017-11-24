@@ -15,7 +15,6 @@ import android.widget.Toast;
 import java.util.List;
 
 import io.reactivex.Single;
-import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableSingleObserver;
@@ -64,8 +63,8 @@ public class BulkRegisterFragment extends Fragment implements AddTypeSelectListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bulk_register, container, false);
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_bulk_transaction);
-        ImageButton button = (ImageButton) view.findViewById(R.id.button_open_add_select);
+        RecyclerView listView = view.findViewById(R.id.recyclerView_bulk_transaction);
+        ImageButton button = view.findViewById(R.id.button_open_add_select);
 
         subscription = new CompositeDisposable();
         twitterManager = new TwitterManager(getActivity());

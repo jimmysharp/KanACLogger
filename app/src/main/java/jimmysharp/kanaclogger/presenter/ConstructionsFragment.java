@@ -35,8 +35,8 @@ public class ConstructionsFragment extends Fragment implements AddConstructionLi
                 db.getAllShipConstructions());
         View view = inflater.inflate(R.layout.fragment_constructions, container, false);
 
-        RecyclerView listView = (RecyclerView) view.findViewById(R.id.recyclerView_construction);
-        ImageButton buttonOpenConstruction = (ImageButton) view.findViewById(R.id.button_open_construction);
+        RecyclerView listView = view.findViewById(R.id.recyclerView_construction);
+        ImageButton buttonOpenConstruction = view.findViewById(R.id.button_open_construction);
 
         listView.setAdapter(adapter);
         buttonOpenConstruction.setOnClickListener(view1 -> {

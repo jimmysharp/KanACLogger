@@ -15,7 +15,7 @@ public class LicenseDialog extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (licenseDialog != null) return licenseDialog;
         View view = View.inflate(getActivity(), R.layout.fragment_license,null);
-        WebView webView = (WebView) view.findViewById(R.id.webview_license);
+        WebView webView = view.findViewById(R.id.webview_license);
         webView.loadUrl(getString(R.string.path_license));
 
         licenseDialog = new AlertDialog.Builder(getActivity())
