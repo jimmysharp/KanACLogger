@@ -50,4 +50,6 @@
     <string name="msg_twitter_tweet_failed">Failed to tweet.</string>
     <string name="path_license" translatable="false">file:///android_asset/licenses.html</string>
     <string name="text_license">License</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

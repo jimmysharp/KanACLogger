@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 Properties props = new Properties()
 try {
@@ -50,10 +52,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
     testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:support-v13:26.1.0'
     implementation 'com.android.support:support-v4:26.1.0'
     implementation 'com.android.support:percent:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
@@ -65,11 +67,15 @@ dependencies {
     implementation "android.arch.lifecycle:reactivestreams:1.1.0"
     implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property:4.0.0'
+    implementation 'com.github.k-kagurazaka.rx-property-android:rx-property-kotlin:4.0.0'
     implementation 'com.jakewharton.threetenabp:threetenabp:1.0.5'
     implementation 'org.twitter4j:twitter4j-core:4.0.4'
     implementation 'com.annimon:stream:1.1.9'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    kapt 'com.android.databinding:compiler:3.0.1'
 }
 repositories {
     mavenCentral()
 }
+
