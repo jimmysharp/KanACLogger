@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.view.fragment
+package jimmysharp.kanaclogger.app.main
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -17,7 +17,7 @@ class BulkRegisterFragment : Fragment() {
     }
     lateinit var binding : FragmentBulkRegisterBinding
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_bulk_register, container, false)
 
         return binding.root

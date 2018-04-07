@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.viewmodel
+package jimmysharp.kanaclogger.app.main
 
 import android.arch.lifecycle.ViewModel
 

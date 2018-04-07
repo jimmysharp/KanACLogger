@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.view.fragment
+package jimmysharp.kanaclogger.app.main
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -18,7 +18,7 @@ class ConstructionsFragment : Fragment() {
 
     lateinit var binding : FragmentConstructionsBinding
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_constructions, container, false)
 
         return binding.root

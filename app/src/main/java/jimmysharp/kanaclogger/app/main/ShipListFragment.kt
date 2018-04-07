@@ -1,4 +1,4 @@
-package jimmysharp.kanaclogger.view.fragment
+package jimmysharp.kanaclogger.app.main
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -18,7 +18,7 @@ class ShipListFragment : Fragment() {
 
     lateinit var binding : FragmentShipListBinding
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ship_list, container, false)
 
         return binding.root

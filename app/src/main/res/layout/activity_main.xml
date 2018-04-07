@@ -1,41 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.activity.MainActivity">
-    <LinearLayout
-        android:id="@+id/main_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".app.main.MainActivity">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
-            android:theme="@style/AppTheme.AppBarOverlay"/>
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:title="@string/app_name"/>
 
-        <RelativeLayout
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary">
 
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs_contents"
-                android:layout_width="match_parent"
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_bulk"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:background="?attr/colorPrimary"
-                android:theme="@style/AppTheme.AppBarOverlay"/>
+                android:text="@string/tab_bulk"/>
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/container_contents"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/tabs_contents"
-                android:layout_alignParentBottom="true"/>
-        </RelativeLayout>
-    </LinearLayout>
-</layout>
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_construction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_construction"/>
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_drop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_drop"/>
+
+            <android.support.design.widget.TabItem
+                android:id="@+id/tab_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tab_list"/>
+        </android.support.design.widget.TabLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/container_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+</android.support.design.widget.CoordinatorLayout>
 

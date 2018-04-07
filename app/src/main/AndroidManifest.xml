@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.activity.MainActivity"
+            android:name=".app.main.MainActivity"
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme">
@@ -23,17 +23,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.activity.SettingsActivity"
+            android:name=".app.settings.SettingsActivity"
             android:label="@string/action_settings"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="kanactwit"
-                    android:host="oauth"/>
+
+                <data
+                    android:host="oauth"
+                    android:scheme="kanactwit" />
             </intent-filter>
-         </activity>
+        </activity>
     </application>
 
 </manifest>
