@@ -5,6 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presenter.DropsFragment">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="jimmysharp.kanaclogger.app.main.DropsViewModel"/>
+    </data>
+
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

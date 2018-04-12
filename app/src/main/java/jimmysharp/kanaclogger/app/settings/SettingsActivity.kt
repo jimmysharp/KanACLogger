@@ -4,11 +4,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import jimmysharp.kanaclogger.R
+import jimmysharp.kanaclogger.app.util.replaceFragment
 import kotlinx.android.synthetic.main.activity_setting.*
 
 class SettingsActivity : AppCompatActivity() {
     companion object {
-        private val FRAGMENT_TAG = "setting_fragment"
+        val TAG = SettingsActivity::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,9 +20,7 @@ class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar_settings)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        supportFragmentManager.beginTransaction()
-                .replace(R.id.container_settings, SettingsFragment(), FRAGMENT_TAG)
-                .commit()
+        replaceFragment(findOrCreateFragment(), R.id.container_settings)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -35,4 +34,8 @@ class SettingsActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
+
+    private fun findOrCreateFragment() =
+            supportFragmentManager.findFragmentById(R.id.container_settings) ?:
+                    SettingsFragment.newInstance()
 }

@@ -4,6 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presenter.ShipListFragment">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="jimmysharp.kanaclogger.app.main.ShipListViewModel"/>
+    </data>
+
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

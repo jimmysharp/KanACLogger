@@ -5,6 +5,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presenter.ConstructionsFragment">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="jimmysharp.kanaclogger.app.main.ConstructionsViewModel"/>
+    </data>
+
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

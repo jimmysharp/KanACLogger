@@ -1,5 +1,6 @@
 package jimmysharp.kanaclogger.app.main
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -15,13 +16,18 @@ import jimmysharp.kanaclogger.app.settings.SettingsActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    companion object {
+        val TAG = MainActivity::class.java.simpleName
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar_main)
 
-        val pager = SectionsPagerAdapter(supportFragmentManager, this)
+        val pager = SectionsPagerAdapter(supportFragmentManager)
 
         container_main.adapter = pager
         container_main.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs_main))
@@ -45,7 +51,7 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    inner class SectionsPagerAdapter(fm: FragmentManager, private val activity: MainActivity) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment? {
             var fragment: Fragment? = null
